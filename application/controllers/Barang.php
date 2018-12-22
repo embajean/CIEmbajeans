@@ -118,116 +118,12 @@ class Barang extends CI_Controller {
 	}
 
 
-	public function tambah_barang() #hapus
-	{
-		$date = date('Y-m-d');
-		//$this->pre($time->now);
-		//die;
-		$ins = array(
-			'sku' => $this->input->post('sku'),
-			'barangnama' => $this->input->post('barangnama'),
-			'id_kategori' => $this->input->post('id_kategori'),
-			'harga' => $this->input->post('harga'),
-			'deskripsi' => $this->input->post('deskripsi'),
-			'tgl_buat' => $date,
-			'Petunjukcuci' => $this->input->post('Petunjukcuci'),
-			'diskonepersen' => $this->input->post('diskonpersen'),
-			'diskonangka' => $this->input->post('diskonangka'),
-			'warna' => $this->input->post('warna'),
-			'detailsize' => $this->input->post('detailsize'),
-		);
-
-		/*$ins2 = array(
-			'size' => $this->input->post('size'),
-			'stok' => $this->input->post('stok'),
-			'gambar' => $_FILES['gambar']['name'],
-		);*/
-
-		$size = $this->input->post('size');
-		$stok = $this->input->post('stok');
-
-
-		/*$this->pre($size);
-		die;*/
-		$image = $_FILES['gambar']['name'];
-		$name_image = array('gambar' => time().$image[0]);
-		$this->pre($name_image);
-		die;
-		$config['file_name'] = $filename;
-		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|png';
-		$config['max_size']  = '300';
-		$config['max_width']  = '1024';
-		$config['max_height']  = '768';
-		
-		$this->load->library('upload', $config);
-
-		
-		//$_countImg = count($image);
-		/*$this->pre($image);
-		die;*/
-		
-		$stat = 0;
-		
-
-		foreach ($image as $key => $value) {
-		 	
-		/*	$this->pre($image[$key]);
-			die;*/
-
-
-			if (!$this->upload->do_upload('gambar'.$image[$key])){
-			
-			$error = array('error' => $this->upload->display_errors());
-
-		/*	$this->session->set_flashdata('msg', '<div class="alert alert-danger alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4>Ukuran Gambar'.$key.' Terlalu besar, Max 300kb</h4>
-						</div>');*/
-			$this->session->set_flashdata('msg', $error['error']);
-			#redirect('Barang','refresh');
-			$this->pre($error);
-			die;
-
-
-			$stat = 0;
-
-			}else{
-				
-				$data[$key] = array('upload_data' => $this->upload->data());
-				$data_gambar = array('gambar' => $image[$key]);
-				$ins_gambar[$key] = $this->Mod_barang->ins_gambar($data_gambar[$key]);
-				//echo "success";	
-				$stat = 1;
-				$this->pre($data_gambar[$key]);
-				die;
-			}
-			
-		}
-
-
-
-		
-
-		if($stat == 1){
-			//$this->pre($data);
-
-			
-
-			$this->Mod_barang->ins($ins);
-			$this->session->set_flashdata('msg', 
-				        '<div class="alert alert-success alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4>Sukses menambahkan barang</h4>
-						</div>');
-			redirect('Barang','refresh');
-		}
-
-	}
 
 	public function tambah_barang2()
 	{
 		$date = $this->db->query('select now() as now')->row();
+		$awal = $this->input->post('lim_diskon');
+		$akhir = $this->input->post('lim_diskon2');
 
 		$ins = array(
 			'sku' => $this->input->post('sku'),
@@ -242,112 +138,127 @@ class Barang extends CI_Controller {
 			'diskonpersen' => $this->input->post('diskonpersen'),
 			'diskonangka' => $this->input->post('diskonangka'),
 			'lim_diskon' => $this->input->post('lim_diskon'),
+			'lim_diskon2' => $this->input->post('lim_diskon2'),
 		);
 
-		//cek sku
-		$_ceksku = $this->Mod_barang->cek_sku($ins['sku']);
+		if($awal <= $akhir && $akhir >= $awal){ //cek date diskon limit
 
-		if($_ceksku > 0){
 
-			$this->session->set_flashdata('msg', 
-				        '<div class="alert alert-danger alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4>sku '.$ins['sku'].' sudah ada</h4>
-						</div>');
-			redirect('Barang','refresh');
+			//cek sku
+			$_ceksku = $this->Mod_barang->cek_sku($ins['sku']);
+
+			if($_ceksku > 0){
+
+				$this->session->set_flashdata('msg', 
+					        '<div class="alert alert-danger alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>sku '.$ins['sku'].' sudah ada</h4>
+							</div>');
+				redirect('Barang','refresh');
+
+			}else{
+				
+				//insert barang
+				$_insBarang = $this->Mod_barang->ins($ins);
+				$get_new_item = $this->Mod_barang->get_new_item();
+
+				/*$this->pre($get_new_item);
+				die;*/
+
+				$stok = $this->input->post('stok');
+				$size = $this->input->post('size');
+				$gambar = $_FILES['gambar_product']['name'];
+
+				
+
+				$_countStok = count($stok);
+				$_countImg = count($gambar);
+
+				/*$this->pre($gambar);
+				die;*/
+
+				
+
+				for ($key = 0; $key < $_countStok; $key++ ) {
+
+					$data_stok = array(
+						'sku' => $ins['sku'],
+						'ukuran' => $size[$key],
+						'stok' => $stok[$key],
+					);
+					
+					$_insStok = $this->Mod_barang->ins_stok_by_size($data_stok);
+
+				}
+
+				//uploads
+
+					$config['upload_path'] = './uploads/';
+					$config['allowed_types'] = 'gif|jpg|png|jpeg';
+					$config['max_size']  = '200';
+					$config['max_width']  = '1024';
+					$config['max_height']  = '768';
+					
+					$this->load->library('upload', $config);
+					$files = $_FILES;
+				
+				for ($key= 0; $key < $_countImg; $key++) {
+					//$img = time().$_FILES['gambar']['name'][$key];
+					$name_image = time().$gambar[$key];
+					$name_image = explode(' ', $name_image);
+					$name_image = implode('_', $name_image);
+					/*$name_image = explode('-', $name_image);
+					$name_image = implode('_', $name_image);*/
+					
+					$_FILES['gambar_product']['name']= time().$gambar[$key];
+			        $_FILES['gambar_product']['type']= $files['gambar_product']['type'][$key];
+			        $_FILES['gambar_product']['tmp_name']= $files['gambar_product']['tmp_name'][$key];
+			        $_FILES['gambar_product']['error']= $files['gambar_product']['error'][$key];
+			        $_FILES['gambar_product']['size']= $files['gambar_product']['size'][$key];    
+
+			        $this->upload->initialize($config);
+			        $this->upload->do_upload('gambar_product');
+
+			        $data_gambar = array(
+							'sku' => $ins['sku'],
+							'gambar_product' => $name_image,
+						);
+
+			        
+
+			        $this->Mod_barang->ins_gambar($data_gambar);
+					
+				}
+
+				/*$this->pre($data_gambar);
+			        die;*/
+
+				$this->session->set_flashdata('msg', 
+					        '<div class="alert alert-success alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>Sukses menambahkan barang</h4>
+							</div>');
+
+				redirect('Barang','refresh');
+
+				/*$this->pre($_FILES['gambar_product']['name']);
+				die;*/
+
+				
+
+			}
 
 		}else{
-			
-			//insert barang
-			$_insBarang = $this->Mod_barang->ins($ins);
-			$get_new_item = $this->Mod_barang->get_new_item();
-
-			/*$this->pre($get_new_item);
-			die;*/
-
-			$stok = $this->input->post('stok');
-			$size = $this->input->post('size');
-			$gambar = $_FILES['gambar_product']['name'];
-
-			
-
-			$_countStok = count($stok);
-			$_countImg = count($gambar);
-
-			/*$this->pre($gambar);
-			die;*/
-
-			
-
-			for ($key = 0; $key < $_countStok; $key++ ) {
-
-				$data_stok = array(
-					'sku' => $ins['sku'],
-					'ukuran' => $size[$key],
-					'stok' => $stok[$key],
-				);
-				
-				$_insStok = $this->Mod_barang->ins_stok_by_size($data_stok);
-
-			}
-
-			//uploads
-
-				$config['upload_path'] = './uploads/';
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['max_size']  = '200';
-				$config['max_width']  = '1024';
-				$config['max_height']  = '768';
-				
-				$this->load->library('upload', $config);
-				$files = $_FILES;
-			
-			for ($key= 0; $key < $_countImg; $key++) {
-				//$img = time().$_FILES['gambar']['name'][$key];
-				$name_image = time().$gambar[$key];
-				$name_image = explode(' ', $name_image);
-				$name_image = implode('_', $name_image);
-				/*$name_image = explode('-', $name_image);
-				$name_image = implode('_', $name_image);*/
-				
-				$_FILES['gambar_product']['name']= time().$gambar[$key];
-		        $_FILES['gambar_product']['type']= $files['gambar_product']['type'][$key];
-		        $_FILES['gambar_product']['tmp_name']= $files['gambar_product']['tmp_name'][$key];
-		        $_FILES['gambar_product']['error']= $files['gambar_product']['error'][$key];
-		        $_FILES['gambar_product']['size']= $files['gambar_product']['size'][$key];    
-
-		        $this->upload->initialize($config);
-		        $this->upload->do_upload('gambar_product');
-
-		        $data_gambar = array(
-						'sku' => $ins['sku'],
-						'gambar_product' => $name_image,
-					);
-
-		        
-
-		        $this->Mod_barang->ins_gambar($data_gambar);
-				
-			}
-
-			/*$this->pre($data_gambar);
-		        die;*/
 
 			$this->session->set_flashdata('msg', 
-				        '<div class="alert alert-success alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4>Sukses menambahkan barang</h4>
-						</div>');
+					        '<div class="alert alert-danger alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>GALAT ! TANGGAL AKHIR DISKON TIDAK BOLEH KURANG DARI HARI AWAL DISKON </h4>
+							</div>');
 
 			redirect('Barang','refresh');
 
-			/*$this->pre($_FILES['gambar_product']['name']);
-			die;*/
-
-			
-
 		}
-
 		
 	}
 
@@ -439,192 +350,219 @@ class Barang extends CI_Controller {
 			'detailsize' => $this->input->post('detailsize'),
 			'petunjukcuci' => $this->input->post('Petunjukcuci'),
 			'tgl_ubah' => $date->now,
+			'diskonpersen' => $this->input->post('diskonpersen'),
+			'diskonangka' => $this->input->post('diskonangka'),
+			'lim_diskon' => $this->input->post('lim_diskon'),
+			'lim_diskon2' => $this->input->post('lim_diskon2'),
 		);
-		/*$this->pre($data_barang);
+
+		$tanggalawal = $this->input->post('lim_diskon');
+		$tanggalakhir = $this->input->post('lim_diskon2');
+
+		/*$this->pre(array($tanggalawal, $tanggalakhir));
 		die;*/
 
-		$sku = $data_barang['sku'];
+		if($tanggalawal <= $tanggalakhir && $tanggalakhir >= $tanggalawal){
 
-		$_TrueBrang = $this->Mod_barang->edit($id, $data_barang);
-		$deletegambar = empty($this->input->post('deletegambar')) ? array() : $this->input->post('deletegambar');
-		$gambar_baru = empty($_FILES['gambar_input']['name']) ? array() : $_FILES['gambar_input']['name'];
+			$sku = $data_barang['sku'];
 
-		$gambar_edit = empty($_FILES['gambar_edit']['name']) ? array() : $_FILES['gambar_edit']['name'] ;
+			$_TrueBrang = $this->Mod_barang->edit($id, $data_barang);
+			$deletegambar = empty($this->input->post('deletegambar')) ? array() : $this->input->post('deletegambar');
+			$gambar_baru = empty($_FILES['gambar_input']['name']) ? array() : $_FILES['gambar_input']['name'];
 
-		$id_gambar = $this->input->post('gantigambar');
+			$gambar_edit = empty($_FILES['gambar_edit']['name']) ? array() : $_FILES['gambar_edit']['name'] ;
 
-		$size = $this->input->post('size');
-		$stok = $this->input->post('stok');
+			$id_gambar = $this->input->post('gantigambar');
 
-		/*$this->pre(array(
-				'id' => $id_gambar,
-				'sku' => $data_barang['sku'],
-				'gambar_baru' => $gambar_baru,
-				'gambar_edit' => $gambar_edit,
-				'delete_gambar' => $deletegambar,
-				'size' => $size, 
-				'stok' => $stok,
-				'data_barang' => $data_barang
-			));
-		die;*/
+			$size = $this->input->post('size');
+			$stok = $this->input->post('stok');
 
-		/*foreach ($gambar as $key => $value) {
-			if(empty($gambar[$key])){
-				#echo 'empty';
-			}else{
-				echo $key;
-			}
-		}*/
-		#die;
+			/*$this->pre(array(
+					'id' => $id_gambar,
+					'sku' => $data_barang['sku'],
+					'gambar_baru' => $gambar_baru,
+					'gambar_edit' => $gambar_edit,
+					'delete_gambar' => $deletegambar,
+					'size' => $size, 
+					'stok' => $stok,
+					'data_barang' => $data_barang
+				));
+			die;*/
 
-		$_jumlahGambar = count($gambar_edit);
-		$_jumlahSize = count($size);
-
-		//input gambar / size and stok
-		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png|jpeg';
-		$config['max_size']  = '200';
-		$config['max_width']  = '1024';
-		$config['max_height']  = '768';
-
-		$this->load->library('upload', $config);
-		$files = $_FILES;
-
-		$_TrueGambar = 1;
-		$_TrueSize = 0;
-		$_TrueDelGambar = 1;
-		$_TrueGambarBaru = 1;
-
-		//gambar edit
-		foreach ($gambar_edit as $key => $value) {
-
-			if(!empty($gambar_edit[$key])){
-
-				$name_image = time().$gambar_edit[$key];
-				$name_image = explode(' ', $name_image);
-				$name_image = implode('_', $name_image);
-				/*$name_image = explode('-', $name_image);
-				$name_image = implode('_', $name_image);*/
-				
-
-				
-				$_FILES['gambar_edit']['name']= time().$gambar_edit[$key];
-		        $_FILES['gambar_edit']['type']= $files['gambar_edit']['type'][$key];
-		        $_FILES['gambar_edit']['tmp_name']= $files['gambar_edit']['tmp_name'][$key];
-		        $_FILES['gambar_edit']['error']= $files['gambar_edit']['error'][$key];
-		        $_FILES['gambar_edit']['size']= $files['gambar_edit']['size'][$key];
-
-
-
-
-		        $this->upload->initialize($config);
-		        $this->upload->do_upload('gambar_edit');
-
-		        $data_gambar[$key] = array(
-						'sku' => $sku,
-						'gambar_product' => $name_image,
-					);
-		        /* $this->pre(array($name_image, $_FILES['gambar_edit'], $this->upload->do_upload('gambar_edit'), $data_gambar));
-				die;*/
-
-
-				$query_gambar = $this->Mod_barang->edit_gambar($data_barang['sku'], $id_gambar[$key], $data_gambar[$key]);
-
-				if($query_gambar == true){
-
-					$_TrueGambar++;
-
+			/*foreach ($gambar as $key => $value) {
+				if(empty($gambar[$key])){
+					#echo 'empty';
+				}else{
+					echo $key;
 				}
+			}*/
+			#die;
 
-			}
+			$_jumlahGambar = count($gambar_edit);
+			$_jumlahSize = count($size);
 
-		}
+			//input gambar / size and stok
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['max_size']  = '200';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
 
-		//tambah gambar
+			$this->load->library('upload', $config);
+			$files = $_FILES;
 
-		foreach ($gambar_baru as $key_gambarBaru => $value_gambarBaru) {
-			
-			if(!empty($gambar_baru[$key_gambarBaru])){
+			$_TrueGambar = 1;
+			$_TrueSize = 0;
+			$_TrueDelGambar = 1;
+			$_TrueGambarBaru = 1;
 
-					$name_image = time().$gambar_baru[$key_gambarBaru];
+			//gambar edit
+			/*$this->pre($gambar_edit);
+			die;*/
+			foreach ($gambar_edit as $key => $value) {
+
+				if(!empty($gambar_edit[$key])){
+
+					$name_image = time().$gambar_edit[$key];
 					$name_image = explode(' ', $name_image);
 					$name_image = implode('_', $name_image);
 					/*$name_image = explode('-', $name_image);
 					$name_image = implode('_', $name_image);*/
 					
+
 					
-					$_FILES['gambar_input']['name']= time().$gambar_baru[$key_gambarBaru];
-			        $_FILES['gambar_input']['type']= $files['gambar_input']['type'][$key_gambarBaru];
-			        $_FILES['gambar_input']['tmp_name']= $files['gambar_input']['tmp_name'][$key_gambarBaru];
-			        $_FILES['gambar_input']['error']= $files['gambar_input']['error'][$key_gambarBaru];
-			        $_FILES['gambar_input']['size']= $files['gambar_input']['size'][$key_gambarBaru];    
+					#$_FILES['gambar_edit']['name']= time().$gambar_edit[$key];
+					$_FILES['gambar_edit']['name']= $name_image;
+			        $_FILES['gambar_edit']['type']= $files['gambar_edit']['type'][$key];
+			        $_FILES['gambar_edit']['tmp_name']= $files['gambar_edit']['tmp_name'][$key];
+			        $_FILES['gambar_edit']['error']= $files['gambar_edit']['error'][$key];
+			        $_FILES['gambar_edit']['size']= $files['gambar_edit']['size'][$key];
+
+
+
 
 			        $this->upload->initialize($config);
-			        $this->upload->do_upload('gambar_input');
+			        $this->upload->do_upload('gambar_edit');
 
-			        $data_gambar = array(
+			        $data_gambar[$key] = array(
 							'sku' => $sku,
 							'gambar_product' => $name_image,
 						);
+			         /*$this->pre(array($name_image, $_FILES['gambar_edit'], $this->upload->do_upload('gambar_edit'), $data_gambar));
+					die;*/
 
 
-					$query_gambar = $this->Mod_barang->ins_gambar($data_gambar);
+					$query_gambar = $this->Mod_barang->edit_gambar($data_barang['sku'], $id_gambar[$key], $data_gambar[$key]);
 
-				}
+					if($query_gambar == true){
 
-		}
+						$_TrueGambar++;
 
-		foreach ($deletegambar as $key => $value) {
-
-			if(!empty($deletegambar[$key])){
-
-				$del_gambar = $this->Mod_barang->Hapus_gambar($value);
-
-				if($del_gambar == true){
-
-					$_TrueDelGambar++;
+					}
 
 				}
 
 			}
 
-		}
+			//tambah gambar
 
-		#$this->pre($data_gambar);
-		#die;
+			foreach ($gambar_baru as $key_gambarBaru => $value_gambarBaru) {
+				
+				if(!empty($gambar_baru[$key_gambarBaru])){
 
-		for ($j = 0; $j < $_jumlahSize ; $j++) {
+						$name_image = time().$gambar_baru[$key_gambarBaru];
+						$name_image = explode(' ', $name_image);
+						$name_image = implode('_', $name_image);
+						/*$name_image = explode('-', $name_image);
+						$name_image = implode('_', $name_image);*/
+						
+						
+						$_FILES['gambar_input']['name']= time().$gambar_baru[$key_gambarBaru];
+				        $_FILES['gambar_input']['type']= $files['gambar_input']['type'][$key_gambarBaru];
+				        $_FILES['gambar_input']['tmp_name']= $files['gambar_input']['tmp_name'][$key_gambarBaru];
+				        $_FILES['gambar_input']['error']= $files['gambar_input']['error'][$key_gambarBaru];
+				        $_FILES['gambar_input']['size']= $files['gambar_input']['size'][$key_gambarBaru];    
 
-			$ukuran = $size[$j];
-			
-			$data_size = array(
-				'sku' => $this->input->post('sku'),
-				'ukuran' => $size[$j],
-				'stok' => $stok[$j],
-			);
+				        $this->upload->initialize($config);
+				        $this->upload->do_upload('gambar_input');
 
-			$query_stok = $this->Mod_barang->edit_stok($sku, $ukuran,  $data_size);
+				        $data_gambar = array(
+								'sku' => $sku,
+								'gambar_product' => $name_image,
+							);
 
-			if($query_stok == true){
-				$_TrueSize++;
+
+						$query_gambar = $this->Mod_barang->ins_gambar($data_gambar);
+
+					}
+
 			}
 
-		}
+			foreach ($deletegambar as $key => $value) {
 
-		/*$this->pre(array($_TrueGambar, $_TrueGambarBaru, $_TrueDelGambar, $_TrueSize, $_TrueBrang));
-			die;*/
+				if(!empty($deletegambar[$key])){
 
-		if($_TrueGambar <= 6 && $_TrueSize <= 10 && $_TrueBrang == 1){
+					$del_gambar = $this->Mod_barang->Hapus_gambar($value);
+
+					if($del_gambar == true){
+
+						$_TrueDelGambar++;
+
+					}
+
+				}
+
+			}
+
+			#$this->pre($data_gambar);
+			#die;
+
+			for ($j = 0; $j < $_jumlahSize ; $j++) {
+
+				$ukuran = $size[$j];
+				
+				$data_size = array(
+					'sku' => $this->input->post('sku'),
+					'ukuran' => $size[$j],
+					'stok' => $stok[$j],
+				);
+
+				$query_stok = $this->Mod_barang->edit_stok($sku, $ukuran,  $data_size);
+
+				if($query_stok == true){
+					$_TrueSize++;
+				}
+
+			}
+
+			/*$this->pre(array($_TrueGambar, $_TrueGambarBaru, $_TrueDelGambar, $_TrueSize, $_TrueBrang));
+				die;*/
+
+			if($_TrueGambar <= 6 && $_TrueSize <= 10 && $_TrueBrang == 1){
+
+				$this->session->set_flashdata('msg', 
+					        '<div class="alert alert-success alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>Berhasil Edit data '.$sku.'</h4>
+							</div>');
+				redirect('Barang','refresh');
+			}else{
+				echo 'false';
+			}
+
+		}else{
 
 			$this->session->set_flashdata('msg', 
-				        '<div class="alert alert-success alert-dismissible">
-							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-							<h4>Berhasil Edit data '.$sku.'</h4>
-						</div>');
+					        '<div class="alert alert-danger alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>Tanggal Diskon tidak sesuai</h4>
+							</div>');
 			redirect('Barang','refresh');
-		}else{
-			echo 'false';
+
 		}
+
+		/*$this->pre($data_barang);
+		die;*/
 
 
 

@@ -35,7 +35,7 @@ class Slider extends CI_Controller {
 		/*$this->pre($data);
 		die;*/
 		$this->load->view('Admin/Header',$data);
-		$this->load->view('Admin/slider');
+		$this->load->view('Admin/Slider');
 		$this->load->view('Admin/Footer');
 	}
 

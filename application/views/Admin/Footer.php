@@ -1,6 +1,6 @@
         <footer>
             <div class="footer-area">
-                <p>© Copyright 2018 Template by <a href="https://colorlib.com/wp/">Somnium</a>.</p>
+                <p>© Copyright 2018 Template by <a href="#">Somnium</a>.</p>
             </div>
         </footer>
         <!-- footer area end-->
@@ -87,10 +87,6 @@
         //slider
         $("#frm-tambahslider").hide();
 
-        $("#btn-slidertambah").click(function() {
-            $("#frm-tambahslider").toggle('slow');
-        });
-
         $("#modalEditslider").on('show.bs.modal', function(e){
             var rowid = $(e.relatedTarget).data('id');
             //get data
@@ -136,37 +132,6 @@
         $("#btn-slidertambah").click(function() {
             $("#frm-tambahslider").toggle('slow');
         });
-
-        $("#modalEditslider").on('show.bs.modal', function(e){
-            var rowid = $(e.relatedTarget).data('id');
-            //get data
-            $.ajax({
-                type : "POST",
-                url : "<?php echo site_url('Slider/Get_slider');?>",
-                data : 'rowid='+rowid,
-                success : function(data){
-                    $('.fetched-data').html(data);
-                }
-            })
-        });
-        //tambah slider
-       /* $("#btn-sliderinput").click(function() {
-
-            var gambar = $('#input-gambarslider').val();
-            var head1 = $("#input-head1").val();
-            var head2 = $("#input-head2").val();
-            var head3 = $("#input-head3").val();
-
-            $.ajax({
-                url: '<?php echo site_url('Slider/add');?>',
-                type: 'POST',
-                data: {gambar : gambar, head1 : head1, head2 : head2, head3 : head3},
-                success: function(data){
-                    $("#datatable-slider").html(data);
-                }
-            })
-            
-        });*/
 
     });
 </script>

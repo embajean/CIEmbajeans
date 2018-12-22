@@ -11,7 +11,7 @@
 
     <!-- Title Page-->
     <title>Login</title>
-    <link href='<?php echo base_url('assets/gambar/logo/logoemba.png');?>' rel='shortcut icon'>
+    <link href='<?php echo base_url('assets/Gambar/Logo/logoemba.png');?>' rel='shortcut icon'>
 
     <!-- Fontfaces CSS-->
     <link href="<?php echo base_url('assets/admin/');?>css/font-face.css" rel="stylesheet" media="all">
@@ -44,7 +44,7 @@
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                                <img src="<?php echo base_url('assets/Gambar/logo/logoemba.png');?>" style="height: 120px; width: auto;" alt="EmbaJeans">
+                                <img src="<?php echo base_url('assets/Gambar/Logo/logoemba.png');?>" style="height: 120px; width: auto;" alt="EmbaJeans">
                             </a>
                             <div id="notifications"><?php echo $this->session->flashdata('msg'); ?></div>
                         </div>

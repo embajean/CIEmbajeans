@@ -1,3 +1,6 @@
+<?php
+    $sekarang = date('Y-m-d');
+?>
 <form action="<?php echo site_url('Barang/edit_barang2/'.$barang->id);?>" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -97,6 +100,36 @@
                                     <textarea name="deskripsi" class="form-control" required="" cols="50" rows="9"><?php echo $barang->deskripsi;?></textarea>
                                     <label>Petunjuk Pencucian</label>
                                     <textarea name="Petunjukcuci" class="form-control" cols="50" rows="7" required><?php echo $barang->petunjukcuci;?></textarea>
+                                    <label>Diskon</label>
+                                    <?php 
+
+                                        $disangka = !empty($barang->diskonangka) ? $barang->diskonangka : null;
+                                        $dispersen = !empty($barang->diskonpersen) ? $barang->diskonpersen : null;
+
+                                        if(!empty($dispersen)){
+
+                                            echo '<input type="number" max="100" min="0" name="diskonpersen" id="diskonpersen" class="form-control" value="" placeholder="Persen 0 - 100%" value="'.$dispersen.'">
+                                    <input type="number" name="diskonangka" min="0" id="diskonangka" class="form-control" placeholder="Masukkan angka">';
+
+                                        }elseif (!empty($disangka)) {
+
+                                            echo '<input type="number" max="100" min="0" name="diskonpersen" id="diskonpersen" class="form-control" value="" placeholder="Persen 0 - 100%">
+                                    <input type="number" name="diskonangka" min="0" id="diskonangka" class="form-control" placeholder="Masukkan angka" value="'.$disangka.'">';
+                                            
+                                        }else{
+
+                                            echo '<input type="number" max="100" min="0" name="diskonpersen" id="diskonpersen" class="form-control" value="" placeholder="Persen 0 - 100%">
+                                    <input type="number" name="diskonangka" min="0" id="diskonangka" class="form-control" placeholder="Masukkan angka">';
+
+                                        }
+
+                                    ?>
+
+                                    <label>Tanggal Diskon Awal</label>
+                                    <input type="date" name="lim_diskon" min="<?php echo $sekarang;?>" class="form-control" value="<?php echo $barang->lim_diskon;?>" id="limdis1">
+                                    <label>Tanggal Diskon Akhir</label>
+                                    <input type="date" name="lim_diskon2" min="<?php echo $sekarang;?>" class="form-control" value="<?php echo $barang->lim_diskon2;?>" id="limdis2">
+
                                     <input type="submit" class="btn btn-success" value="Edit Barang">
                                     <input type="reset" class="btn btn-warning" value="cancel">
                                 </div>
@@ -135,6 +168,10 @@
         var output = document.getElementById('uploadPreviewModal6');
         output.src = URL.createObjectURL(event.target.files[0]);
       };
+
+        //diskon
+        $("#limdis1").attr('disabled', true);
+        $("#limdis2").attr('disabled', true);
 
     $(document).ready(function() {
 
@@ -175,6 +212,44 @@
 
         });
 
+        //diskon
+         $("#diskonpersen").keyup(function() {
+             var text = $('#diskonpersen').val();
+
+             if(text == ''){
+
+                $("#diskonangka").removeAttr('disabled');
+                $("#limdis1").attr('disabled', true);
+                $("#limdis2").attr('disabled', true);
+
+             }else{
+
+                $("#diskonangka").attr('disabled', true);
+                $("#limdis1").removeAttr('disabled');
+                $("#limdis2").removeAttr('disabled');
+
+             }
+             //console.log(text);
+
+         });
+
+         $("#diskonangka").keyup(function() {
+             var text = $('#diskonangka').val();
+
+             if(text == ''){
+
+                $("#diskonpersen").removeAttr('disabled');
+                $("#limdis1").attr('disabled', true);
+                $("#limdis2").attr('disabled', true);
+
+             }else{
+
+                $("#diskonpersen").attr('disabled', true);
+                $("#limdis1").removeAttr('disabled');
+                $("#limdis2").removeAttr('disabled');
+
+             }
+
         //change log kategori
         $('#edit-kategori').change(function() {
             var sku = '<?php echo $barang->sku;?>';
@@ -190,6 +265,8 @@
             })            
 
         });
+
+      
 
     });
 

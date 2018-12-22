@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Dashboard Embajeans</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='<?php echo base_url('assets/gambar/logo/logoemba.png');?>' rel='shortcut icon'>
+    <link href='<?php echo base_url('assets/Gambar/Logo/logoemba.png');?>' rel='shortcut icon'>
     <link rel="stylesheet" href="<?php echo base_url('assets/admin/');?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url('assets/admin/');?>assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo base_url('assets/admin/');?>assets/css/themify-icons.css">
@@ -39,7 +39,7 @@
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="index.html"><img src="<?php echo base_url('assets/gambar/logo/logo.png');?>" alt="logo"></a>
+                    <a href="<?php echo site_url('adminembajeans');?>"><img src="<?php echo base_url('assets/Gambar/Logo/Logo.png');?>" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">

@@ -10,7 +10,7 @@ $date = date('Y-m-d');
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Master Barang Embajeans</title>
-    <link href='<?php echo base_url('assets/gambar/logo/logoemba.png');?>' rel='shortcut icon'>
+    <link href='<?php echo base_url('assets/Gambar/Logo/logoemba.png');?>' rel='shortcut icon'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?php echo base_url('assets/admin/');?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url('assets/admin/');?>assets/css/font-awesome.min.css">
@@ -49,8 +49,7 @@ $date = date('Y-m-d');
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <!-- <a href="index.html"><img src="<?php echo base_url('assets/gambar/somnium.png');?>" alt="logo"></a> -->
-                    <a href="index.html"><img src="<?php echo base_url('assets/gambar/logo/logo.png');?>" alt="logo"></a>
+                    <a href="index.html"><img src="<?php echo base_url('assets/Gambar/Logo/Logo.png');?>" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">
@@ -96,153 +95,6 @@ $date = date('Y-m-d');
                             </form>
                         </div>
                     </div>
-                    <!-- profile info & task notification -->
-                    <!-- <div class="col-md-6 col-sm-4 clearfix">
-                        <ul class="notification-area pull-right">
-                            <li id="full-view"><i class="ti-fullscreen"></i></li>
-                            <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-                            <li class="dropdown">
-                                <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
-                                    <span>2</span>
-                                </i>
-                                <div class="dropdown-menu bell-notify-box notify-box">
-                                    <span class="notify-title">You have 3 new notifications <a href="#">view all</a></span>
-                                    <div class="nofity-list">
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-danger"></i></div>
-                                            <div class="notify-text">
-                                                <p>You have Changed Your Password</p>
-                                                <span>Just Now</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-comments-smiley btn-info"></i></div>
-                                            <div class="notify-text">
-                                                <p>New Commetns On Post</p>
-                                                <span>30 Seconds ago</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-primary"></i></div>
-                                            <div class="notify-text">
-                                                <p>Some special like you</p>
-                                                <span>Just Now</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-comments-smiley btn-info"></i></div>
-                                            <div class="notify-text">
-                                                <p>New Commetns On Post</p>
-                                                <span>30 Seconds ago</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-primary"></i></div>
-                                            <div class="notify-text">
-                                                <p>Some special like you</p>
-                                                <span>Just Now</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-danger"></i></div>
-                                            <div class="notify-text">
-                                                <p>You have Changed Your Password</p>
-                                                <span>Just Now</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb"><i class="ti-key btn-danger"></i></div>
-                                            <div class="notify-text">
-                                                <p>You have Changed Your Password</p>
-                                                <span>Just Now</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="dropdown">
-                                <i class="fa fa-envelope-o dropdown-toggle" data-toggle="dropdown"><span>3</span></i>
-                                <div class="dropdown-menu notify-box nt-enveloper-box">
-                                    <span class="notify-title">You have 3 new notifications <a href="#">view all</a></span>
-                                    <div class="nofity-list">
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img1.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">Hey I am waiting for you...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img2.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">When you can connect with me...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img3.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">I missed you so much...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img4.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">Your product is completely Ready...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img2.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">Hey I am waiting for you...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img1.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">Hey I am waiting for you...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="notify-item">
-                                            <div class="notify-thumb">
-                                                <img src="assets/images/author/author-img3.jpg" alt="image">
-                                            </div>
-                                            <div class="notify-text">
-                                                <p>Aglae Mayer</p>
-                                                <span class="msg">Hey I am waiting for you...</span>
-                                                <span>3:15 PM</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="settings-btn">
-                                <i class="ti-settings"></i>
-                            </li>
-                        </ul>
-                    </div> -->
                 </div>
             </div>
             <!-- header area end -->
@@ -284,7 +136,7 @@ $date = date('Y-m-d');
                                 <div class="col-md-12 col-lg-12">
                                     <div class="row" id="_addPict">
                                         <div class="col-md-4"> 
-                                            <img src="<?php echo base_url('assets/gambar/Blank-profile.png');?>" id="uploadPreview1" class="form-control img-responsive" style="width: 150px; height: 150px;">
+                                            <img src="<?php echo base_url('assets/Gambar/Blank-profile.png');?>" id="uploadPreview1" class="form-control img-responsive" style="width: 150px; height: 150px;">
                                             <label>Gambar <p style="color:red">(max 200kb)</p> <a href="#javascript(0);" id="appn_picture"><i class="fa fa-plus-circle"></i></a>&nbsp;<a href="#javascript(0);" id="remove-pict"><i class="fa fa-minus-circle"></i></a></label>
                                             <input id="uploadImage1" type="file" required="" name="gambar_product[]" onchange="PreviewImage1(event);">
                                         </div>
@@ -320,10 +172,12 @@ $date = date('Y-m-d');
                                     <label>Cara Perawatan</label>
                                     <textarea name="Petunjukcuci" class="form-control" required cols="50" rows="5"></textarea>
                                     <label>Diskon</label>
-                                    <input type="text" name="diskonpersen" id="diskonpersen" class="form-control" value="" placeholder="Persen 0 - 100%">
-                                    <input type="number" name="diskonangka" id="diskonangka" class="form-control" placeholder="Masukkan angka">
-                                    <label>Tanggal Diskon</label>
-                                    <input type="date" name="lim_diskon" min="<?php echo $date;?>" class="form-control">
+                                    <input type="number" max="100" min="0" name="diskonpersen" id="diskonpersen" class="form-control" value="" placeholder="Persen 0 - 100%">
+                                    <input type="number" name="diskonangka" min="0" id="diskonangka" class="form-control" placeholder="Masukkan angka">
+                                    <label>Tanggal Awal Diskon</label>
+                                    <input type="date" name="lim_diskon" min="<?php echo $date;?>" class="form-control" id="limdis1">
+                                    <label> Tanggal Akhir Diskon</label>
+                                    <input type="date" name="lim_diskon2" min="<?php echo $date;?>" class="form-control" id="limdis2">
 
                                     <input type="submit" class="btn btn-success" value="Tambah Barang">
                                 </div>
@@ -601,10 +455,14 @@ $date = date('Y-m-d');
              if(text == ''){
 
                 $("#diskonangka").removeAttr('disabled');
+                $("#limdis1").attr('disabled', true);
+                $("#limdis2").attr('disabled', true);
 
              }else{
 
                 $("#diskonangka").attr('disabled', true);
+                $("#limdis1").removeAttr('disabled');
+                $("#limdis2").removeAttr('disabled');
 
              }
              //console.log(text);
@@ -617,10 +475,14 @@ $date = date('Y-m-d');
              if(text == ''){
 
                 $("#diskonpersen").removeAttr('disabled');
+                $("#limdis1").attr('disabled', true);
+                $("#limdis2").attr('disabled', true);
 
              }else{
 
                 $("#diskonpersen").attr('disabled', true);
+                $("#limdis1").removeAttr('disabled');
+                $("#limdis2").removeAttr('disabled');
 
              }
              //console.log(text);
@@ -633,7 +495,7 @@ $date = date('Y-m-d');
             _picture++;
             if(_picture <= 6){
 
-             var _showPict = "<div class='col-md-4 col-lg-4 remove-pict-apn"+_picture+"'><img src='<?php echo base_url('assets/gambar/Blank-profile.png');?>' id='uploadPreview"+_picture+"' class='form-control img-responsive' style='width: 150px; height: 150px;'><label>Gambar "+_picture+"<p style='color:red'>(max 200kb)</p></label><input id='uploadImage"+_picture+"' type='file' required name='gambar_product[]' onchange='PreviewImage"+_picture+"(event);'></div>";
+             var _showPict = "<div class='col-md-4 col-lg-4 remove-pict-apn"+_picture+"'><img src='<?php echo base_url('assets/Gambar/Blank-profile.png');?>' id='uploadPreview"+_picture+"' class='form-control img-responsive' style='width: 150px; height: 150px;'><label>Gambar "+_picture+"<p style='color:red'>(max 200kb)</p></label><input id='uploadImage"+_picture+"' type='file' required name='gambar_product[]' onchange='PreviewImage"+_picture+"(event);'></div>";
 
                 $("#_addPict").append(_showPict);
                     //console.log(_showPict);

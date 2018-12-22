@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Mod_Kategori extends CI_Model {
+class Mod_kategori extends CI_Model {
 
 	public function get_all_data(){
 

@@ -131,6 +131,7 @@ class Mod_barang extends CI_Model {
 		$this->db->from('barang');
 		$this->db->join('kategori','barang.id_kategori = kategori.id');
 		$this->db->limit($limit, $start);
+		$this->db->order_by('barang.tgl_buat', 'desc');
 		$query = $this->db->get()->result();
 		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
 		return $query;
