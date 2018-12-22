@@ -1,6 +1,7 @@
 <?php
 /*var_dump($gambar[1]->gambar_product);
 die;*/
+$bb = 0;
 $date = date('Y-m-d');
 ?>
 <!doctype html>

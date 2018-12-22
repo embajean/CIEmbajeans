@@ -115,6 +115,7 @@ class Barang extends CI_Controller {
 		#$this->load->view('Admin/Header', $data);
 		$this->load->view('Admin/Tambah_gambar', $data);
 		#$this->load->view('Admin/Footer');
+		
 	}
 
 

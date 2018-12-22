@@ -137,6 +137,9 @@
 								<a target="_blank" href="https://shopee.co.id/embajeansofficial">
 									<img src="<?php echo base_url('assets/Gambar/Shopee.PNG');?>" class="img img-responsive">
 								</a>
+								<a href="https://www.jd.id/search?keywords=emba%2Bjeans&sortType=sort_default_desc&brandName=emba-jeans&brandId=32381" target="_blank">
+									<img src="<?php echo base_url('assets/Gambar/jdid2.jpg');?>" class="img img-responsive">
+								</a>
 							</div>
 							<div class="col-lg-1">
 							</div>
@@ -149,6 +152,9 @@
 								</a>
 								<a target="_blank" href="https://www.tokopedia.com/emba-jeans?source=universe&st=product">
 									<img src="<?php echo base_url('assets/Gambar/tokped.PNG');?>" class="img img-responsive">
+								</a>
+								<a href="https://zilingo.com/id-id/storefront/SEL4599465154" target="_blank">
+									<img src="<?php echo base_url('assets/Gambar/zilingo.png');?>" class="img img-responsive">
 								</a>
 							</div>
 						</center>
@@ -176,8 +182,7 @@
 								<li><a href="<?php echo site_url('Store');?>" style="color: grey; font-size: 16px;">Store</a></li>
 								<li><a href="#" style="color: grey; font-size: 16px;">Partnership</a></li>
 								<li><a href="<?php echo site_url('About');?>" style="color: grey; font-size: 16px;">About</a></li>
-								<li><a href="<?php echo site_url('Contact');?>" style="color: grey; font-size: 16px;">Contact</a></li>
-								
+								<li><a href="<?php echo site_url('Contact');?>" style="color: grey; font-size: 16px;">Contact</a></li>								
 							</ul>
 						</p>
 					</div>
@@ -201,39 +206,8 @@
 							<li><a href="https://www.youtube.com/channel/UCdifDj9A6WToN6L6ZMw1bKQ" target="_blank" style="color: grey; font-size: 16px;"><i class="icon-youtube"></i></a></li>
 						</ul>
 					</div>
-
-						<!-- <div class="row">
-							<div class="col-lg-3">
-						<h4><p class="txt-foot">Join Our Letter</p></h4>
-							<div class="row">
-									<?php
-									$letter = array(
-										'name' => 'email',
-										'placeholder' => 'embajeans@embajeans.com',
-										'class' => 'form-control',
-										'type' => 'email',
-									);
-									$btn = array(
-												'class' => 'btn btn-warning',
-												'value' => 'Subscribe Now',
-												'style' => 'size : 15px;',
-												);
-										echo '<div class="col-lg-12">';
-										echo form_open();
-											echo form_input($letter);
-										echo '</div>';
-										echo '<div class="col-md-4 col-md-offset-2" id="subscribe">';
-											echo form_submit($btn);
-										echo form_close();
-										echo '</div>';
-									?>
-								
-							</div>
-						</div>
-						</div> -->
-					</div>
-
 				</div>
+			</div>
 		</footer>
 		<div class="copy foot">
 				<div class="row">
