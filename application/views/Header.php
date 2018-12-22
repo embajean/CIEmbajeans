@@ -74,7 +74,51 @@
 		      </div>
 		    </div><!-- /.modal-content -->
 		  <!--</div><!-- /.modal-dialog -->
-		<!--</div><!-- /.modal --> -->
+		<!--</div><!-- /.modal -->
+
+			<div class="modal fade" id="modallogin" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="largeModalLabel">Sign In</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+						<?php echo form_open('login/process', '');?>
+					      <div class="panel-body">
+
+					      	<input type="text" name="id_barang" id="txt-idbarang">
+					      	
+					      	<div class="col-md-12">
+					      		<label for="email">Email</label>
+					      	</div>
+					      	<div class="col-md-12">
+					      		<input type="email" required name="email" id="email" placeholder="Masukkan email" class="form-control">
+					      	</div>
+					      	<div class="col-md-12">
+					      		<label for="password">Password</label>
+					      	</div>
+					      	<div class="col-md-12">
+					      		<input type="password" name="password" placeholder="****" required pattern=".{8,}" title="min 8 character" class="form-control">
+					      	</div>
+					      	<div class="col-md-6">
+								<input type="submit" class="btn btn-warning" value="Sign in">
+							</div>
+							<div class="col-md-6">
+								<a href="<?php echo site_url('Login/register');?>" class="btn btn-warning" target="_blank">Daftar Baru</a>
+							</div>
+					      </div>
+					    
+						<?php echo form_close();?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 		
 	<div class="colorlib-loader"></div>

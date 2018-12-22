@@ -163,42 +163,78 @@
 	
 
 	  $(document).ready(function() {
-	  	$('.add_cart').click(function() {
-	  		var id_barang = $(this).data('produkid');
-	  		var harga = $(this).data('produkharga');
-	  		var qty = $(this).data('qty');
-	  		var mac = $(this).data('mac');
-	  		var id_user = $(this).data('user');
-	  		var _postStat = '<?php echo $true;?>';
-	  		
-	  		//var qty
-	  		$.ajax({
-	  			url: '<?php echo site_url('cart/ins_cart');?>',
-	  			type: 'POST',
-	  			data: {id_barang: id_barang, harga : harga, qty : qty, mac : mac, id_user : id_user},
-	  		})
-	  		.done(function() {
-	  			alert('Sukses Menambahkan Cart');
-	  			//console.log(_postStat);
-	  				$('#jumlah_cart').load("<?php echo site_url('cart/count_cart');?>");
-	  				if(_postStat == 1){
 
-	  					$('#cartnavbar').load("<?php echo site_url('cart/navbarhome');?>");
+	  	<?php
+	  		if(!empty($session)){ //if session true
+	  	?>
+	  		$('.add_cart').click(function() {
+		  		var id_barang = $(this).data('produkid');
+		  		var harga = $(this).data('produkharga');
+		  		var qty = $(this).data('qty');
+		  		var mac = $(this).data('mac');
+		  		var id_user = $(this).data('user');
+		  		var _postStat = '<?php echo $true;?>';
+		  		
+		  		//var qty
+		  		$.ajax({
+		  			url: '<?php echo site_url('cart/ins_cart');?>',
+		  			type: 'POST',
+		  			data: {id_barang: id_barang, harga : harga, qty : qty, mac : mac, id_user : id_user},
+		  		})
+		  		.done(function() {
+		  			alert('Sukses Menambahkan Cart');
+		  			//console.log(_postStat);
+		  				$('#jumlah_cart').load("<?php echo site_url('cart/count_cart');?>");
+		  				if(_postStat == 1){
 
-	  				}else{
+		  					$('#cartnavbar').load("<?php echo site_url('cart/navbarhome');?>");
 
-	  					$('#cartnavbar').load("<?php echo site_url('cart/navbarshop');?>");
-	  					
-	  				}
-	  		})
-	  		.fail(function() {
-	  			console.log("error");
-	  		})
-	  		.always(function() {
-	  			console.log("complete");
+		  				}else{
+
+		  					$('#cartnavbar').load("<?php echo site_url('cart/navbarshop');?>");
+		  					
+		  				}
+		  		})
+		  		.fail(function() {
+		  			console.log("error");
+		  		})
+		  		.always(function() {
+		  			console.log("complete");
+		  		});
+		  		
+		  	});
+
+	  	<?php
+	  		}else{
+	  	?>
+	  		$("#modallogin").on('show.bs.modal', function(e){
+
+	  			var id_barang = $(e.relatedTarget).data('produkid');
+		  		var harga = $(this).data('produkharga');
+		  		var qty = $(this).data('qty');
+		  		var mac = $(this).data('mac');
+		  		var id_user = $(this).data('user');
+		  		var _postStat = '<?php echo $true;?>';
+
+		  		$.ajax({
+		  			url: '<?php echo site_url('Cart');?>',
+		  			type: 'POST',
+		  			data: {id_barang : id_barang, harga : harga, qty : qty, mac : mac, id_user : id_user, _postStat : _postStat},
+		  			
+		  			success:function(data){
+		  				$(".fetchdata").html(data);
+		  			}
+
+		  		})
+		  		
+
 	  		});
-	  		
-	  	});
+
+	  	<?php
+	  		}
+	  	?>
+
+	  	
 
 	  	$('#txt_color').mouseenter(function(event) {
 	  		var txt_color = $(this).data('color');
