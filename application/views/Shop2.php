@@ -109,14 +109,43 @@
 									<div class="product-entry">
 										<a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>">
 											<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][0]->gambar_product);?>);">
-												<p class="tag"><span class="new">New</span></p>
+												<p class="tag"><span class="new">
+													
+													<?php
+													//selisih tanggal
+														$exp_tgl = explode(' ', $value_barang->tgl_buat);
+														$tanggal_awal = new DateTime($exp_tgl[0]);
+														$tanggal_selisih = new DateTime();
+														$selisih = $tanggal_selisih->diff($tanggal_awal)->format("%a");
+
+														if($selisih <= 30){
+															echo "New";
+														}
+														
+													?>
+
+												</span></p>
 												<div class="overlay">
 													<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][1]->gambar_product);?>)">
 													</div>
 												</div>
 												<div class="cart">
 													<p>
-														<span class="addtocart"><a href="#javascript:void(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span>
+														<?php
+															if(!empty($session)){
+														?>
+															<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
+
+														<?php
+															}else{
+														?>
+														<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
+														<?php
+															}
+														?>
+														
+
+
 														<span><a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>"><i class="icon-eye"></i></a></span> 
 														<span><a href="#javascript(0);" class="add_love" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>"><i class="icon-heart3"></i></a></span>
 														<?php
@@ -131,7 +160,7 @@
 											</div>
 										</a>
 										<div class="desc">
-											<h3><a href="#"><?php echo $value_barang->barangnama;?></a></h3>
+											<h3><?php echo $value_barang->barangnama;?></h3>
 											<?php
 
 												if($date <= $value_barang->lim_diskon){

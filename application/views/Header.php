@@ -87,9 +87,9 @@
                         </div>
                         <div class="modal-body">
 						<?php echo form_open('login/process', '');?>
-					      <div class="panel-body">
+					      <div class="panel-body fetchdata-cartlogin">
 
-					      	<input type="text" name="id_barang" id="txt-idbarang">
+					      	<!-- <input type="text" name="id_barang" id="txt-idbarang" value="">
 					      	
 					      	<div class="col-md-12">
 					      		<label for="email">Email</label>
@@ -108,7 +108,7 @@
 							</div>
 							<div class="col-md-6">
 								<a href="<?php echo site_url('Login/register');?>" class="btn btn-warning" target="_blank">Daftar Baru</a>
-							</div>
+							</div> -->
 					      </div>
 					    
 						<?php echo form_close();?>

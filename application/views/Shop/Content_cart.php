@@ -140,7 +140,7 @@
 								<label style="color:grey;">catatan</label>
 								<textarea class="form-control" cols="10" rows="2" name="catatan" required></textarea>
 								<label style="color:grey;">Alamat Tujuan</label>
-								<textarea class="form-control" cols="10" rows="2" name="alamattujuan" required></textarea>
+								<textarea class="form-control" cols="10" rows="2" name="alamattujuan" required><?php echo $session['alamat'];?></textarea>
 								<input type="hidden" name="jumlahbarang_beli" value="<?php echo $cart['jumlah'];?>">
 							</div>
 							<div class="col-lg-6 col-md-6">

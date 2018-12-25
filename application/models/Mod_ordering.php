@@ -30,6 +30,67 @@ class Mod_ordering extends CI_Model {
 
 	}
 
+	public function _myTransGuest($id)
+	{
+		$this->db->select('transaksi.id as idtrans, barang.barangnama, gambar.gambar_product as gambar, transaksi.provinsi, transaksi.city, transaksi.kurir, transaksi.estimasi, transaksi.catatan, transaksi.alamat, transaksi.bukti, transaksi.tgl_beli, transaksi.tgl_tf, transaksi.bukti, detail_transaksi.qty, detail_transaksi.harga, detail_transaksi.subtotal, transaksi.status as status, transaksi.total_harga, transaksi.batasbayar');
+
+		$this->db->from('guest');
+
+		$this->db->join('transaksi', 'transaksi.id_user = guest.id');
+		$this->db->join('detail_transaksi', 'detail_transaksi.id_transaksi = transaksi.id');
+		$this->db->join('barang', 'barang.id = detail_transaksi.id_barang');
+		$this->db->join('gambar', 'gambar.sku = barang.sku');
+		$this->db->order_by('detail_transaksi.id_transaksi', 'desc');
+		$this->db->group_by('detail_transaksi.id_transaksi');
+
+
+		$this->db->where('guest.id', $id);
+
+		$query = $this->db->get()->result();
+		$row = count($query);
+		$sekarang = $this->sekarang();
+		$_JBarang = array();
+		foreach ($query as $key_trans => $value_trans) {
+			
+			$_JBarang[] = $this->db->get_where('detail_transaksi', array('id_transaksi' => $value_trans->idtrans))->num_rows();
+
+			if($value_trans->batasbayar <= $sekarang->now && ($value_trans->status == 'unpaid' || $value_trans->status == 'Ditolak')){
+
+				$this->db->where('id', $value_trans->idtrans);
+				$aa = $this->db->update('transaksi', array('status' => 'expired'));
+
+			}
+
+		}
+
+		$this->db->select('transaksi.id as idtrans, barang.barangnama, gambar.gambar_product as gambar, transaksi.provinsi, transaksi.city, transaksi.kurir, transaksi.estimasi, transaksi.catatan, transaksi.alamat, transaksi.bukti, transaksi.tgl_beli, transaksi.tgl_tf, transaksi.bukti, detail_transaksi.qty, detail_transaksi.harga, detail_transaksi.subtotal, transaksi.status as status, transaksi.total_harga, transaksi.batasbayar, transaksi.ongkir, barang.id as idbarang, transaksi.noresi as noresi');
+
+		$this->db->from('guest');
+
+		$this->db->join('transaksi', 'transaksi.id_user = guest.id');
+		$this->db->join('detail_transaksi', 'detail_transaksi.id_transaksi = transaksi.id');
+		$this->db->join('barang', 'barang.id = detail_transaksi.id_barang');
+		$this->db->join('gambar', 'gambar.sku = barang.sku');
+		$this->db->order_by('detail_transaksi.id_transaksi', 'desc');
+		$this->db->group_by('detail_transaksi.id_transaksi');
+
+
+		$this->db->where('guest.id', $id);
+
+		$query = $this->db->get()->result();
+		$row = count($query);
+
+		$return = array(
+			'query' => $query,
+			'numrows' => $row,
+			'JumlahBarang' => $_JBarang,
+			#'aa' => $aa,
+			//'sekarang' => $sekarang->now,
+		);
+
+		return $return ;
+	}
+
 	function get_transaksi($id_user){
 
 		$this->db->order_by('id','desc');

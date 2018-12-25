@@ -42,6 +42,12 @@ class Mod_login extends CI_Model {
 
 	}
 
+	public function insert_guest($data)
+	{
+		$query = $this->db->insert('guest', $data);
+		return $query;
+	}
+
 }
 
 /* End of file Mod_login.php */

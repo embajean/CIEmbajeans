@@ -210,19 +210,19 @@
 	  		$("#modallogin").on('show.bs.modal', function(e){
 
 	  			var id_barang = $(e.relatedTarget).data('produkid');
-		  		var harga = $(this).data('produkharga');
-		  		var qty = $(this).data('qty');
-		  		var mac = $(this).data('mac');
-		  		var id_user = $(this).data('user');
+		  		var harga = $(e.relatedTarget).data('produkharga');
+		  		var qty = $(e.relatedTarget).data('qty');
+		  		var mac = $(e.relatedTarget).data('mac');
+		  		var id_user = $(e.relatedTarget).data('user');
 		  		var _postStat = '<?php echo $true;?>';
 
 		  		$.ajax({
-		  			url: '<?php echo site_url('Cart');?>',
+		  			url: '<?php echo site_url('Cart/cart_login');?>',
 		  			type: 'POST',
 		  			data: {id_barang : id_barang, harga : harga, qty : qty, mac : mac, id_user : id_user, _postStat : _postStat},
 		  			
 		  			success:function(data){
-		  				$(".fetchdata").html(data);
+		  				$(".fetchdata-cartlogin").html(data);
 		  			}
 
 		  		})

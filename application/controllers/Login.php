@@ -7,9 +7,66 @@ class Login extends CI_Controller {
 	{
 		parent::__construct();
 		//$this->load->model('Mod_provinsi');
-		$this->load->model('mod_login');
+		$this->load->model('Mod_login');
 		$this->load->model('Mod_cart');
 		//$this->load->model('kabupaten');
+	}
+
+	public function ProcesAsGuest()
+	{
+		$input = $this->input->post();
+		$inset = $this->Mod_login->insert_guest($input);
+		$inp_sess = array(
+			'id' => $input['id'],
+			'namadepan' => $input['id'],
+			'email' => $input['email'],
+			'status' => 'Login',
+			'id_stat' => 'guest',
+			'alamat' => $input['alamat'],
+		);
+
+		$this->session->set_userdata('data', $inp_sess);
+		$session = $this->session->userdata('data');
+		$cartBarang = $this->session->userdata('cartbarang');
+
+		$date = date('Y-m-d');
+
+		$data = array(
+			'id_barang' => $cartBarang['id_barang'],
+			'id_user' => $input['id'],
+			'harga' => $cartBarang['harga'],
+			'qty' => 1,
+			'mac' => $cartBarang['mac'],
+			'tanggal' => $date,
+		);
+
+		/*$this->pre(array($session, $cartBarang, $data));
+		die;*/
+		$insert = $this->Mod_cart->ins_cart($data);
+
+		redirect('Cart/mycart','refresh');
+	}
+
+	public function cartguest()
+	{	
+		ob_start();
+		system('ipconfig/all');
+		$mycom = ob_get_contents();
+		ob_clean();
+		$findme = "Physical";
+		$pmac = strpos($mycom, $findme);
+		$mac = substr($mycom, ($pmac+36), 17);
+
+		$sess = $this->session->userdata('data');
+		
+		$id = !empty($sess['id']) ? $sess['id'] : 0;
+
+
+		$data = array(
+			'cart' => $this->Mod_cart->jumlah_cart_id($mac, $id),
+		);
+
+		$this->load->view('Cart/Login', $data);
 	}
 
 	public function Admembajeans()
@@ -31,6 +88,9 @@ class Login extends CI_Controller {
 		$data = array(
 			'cart' => $this->Mod_cart->jumlah_cart_id($mac, $id),
 		);
+
+		/*$this->pre(array($mac, $id, $data));
+		die;*/
 		$this->load->view('Login3', $data);
 		$this->session->sess_destroy();
 		
@@ -51,6 +111,22 @@ class Login extends CI_Controller {
 		);
 		$this->load->view('Register', $data);
 		$this->session->sess_destroy();
+	}
+
+	public function register2()
+	{
+		$id = 0;
+		ob_start();
+		system('ipconfig/all');
+		$mycom = ob_get_contents();
+		ob_clean();
+		$findme = "Physical";
+		$pmac = strpos($mycom, $findme);
+		$mac = substr($mycom, ($pmac+36), 17);
+		$data = array(
+			'cart' => $this->Mod_cart->jumlah_cart_id($mac, $id),
+		);
+		$this->load->view('Register', $data);
 	}
 
 	public function logintransaksi()
@@ -107,7 +183,7 @@ class Login extends CI_Controller {
 		$password = $this->input->post('password');
 		$repassword = $this->input->post('repassword');
 
-		$cek = $this->mod_login->cek_email($email);
+		$cek = $this->Mod_login->cek_email($email);
 
 		if($cek == true){
 
@@ -124,7 +200,7 @@ class Login extends CI_Controller {
 
 				/*$this->pre($data);
 				die;*/
-				$query = $this->mod_login->insert($data);
+				$query = $this->Mod_login->insert($data);
 
 				if($query == true){
 
@@ -135,15 +211,50 @@ class Login extends CI_Controller {
 							Data Berhasil Masuk
 						</div>');
 
-						$data_session = array(
-							'namadepan' => $data['usernama_depan'],
-							'email' => $data['email'],
-							'password' => $data['password'],
-						);
-						
-						$sess =  $this->session->set_userdata('data',$data_session);
+					$arr = array(
+						'email' => $email,
+						'password' => md5($password),
+					);
+					
+					$validasi = $this->Mod_login->valid_login($arr);
 
-					redirect('login/process');
+					$data_session = array(
+						'id' => $validasi->id,
+						'namadepan' => $validasi->usernama_depan,
+						'email' => $validasi->email,
+						'password' => $validasi->password,
+						'status' => 'Login',
+						'id_stat' => 'user',
+					);
+
+					$cartBarang = $this->session->userdata('cartbarang');
+					$this->session->set_userdata('data', $data_session);
+
+					if(!empty($cartBarang)){
+
+						$date = date('Y-m-d');
+
+						$data = array(
+							'id_barang' => $cartBarang['id_barang'],
+							'id_user' => $validasi->id,
+							'harga' => $cartBarang['harga'],
+							'qty' => 1,
+							'mac' => $cartBarang['mac'],
+							'tanggal' => $date,
+						);
+
+						/*$this->pre(array($session, $cartBarang, $data));
+						die;*/
+						$insert = $this->Mod_cart->ins_cart($data);
+						
+						
+						redirect('cart/mycart','refresh');
+						
+					}else{
+
+						redirect('login/process','refresh');
+					}
+
 
 				}else{
 
@@ -190,7 +301,7 @@ class Login extends CI_Controller {
 		$password = $this->input->post('password');
 		$repassword = $this->input->post('repassword');
 
-		$cek = $this->mod_login->cek_email($email);
+		$cek = $this->Mod_login->cek_email($email);
 
 		if($cek == true){
 
@@ -207,7 +318,7 @@ class Login extends CI_Controller {
 
 				/*$this->pre($data);
 				die;*/
-				$query = $this->mod_login->insert($data);
+				$query = $this->Mod_login->insert($data);
 
 				if($query == true){
 
@@ -272,7 +383,7 @@ class Login extends CI_Controller {
 			/*$this->pre($arr);
 			die;*/
 
-			$validasi = $this->mod_login->valid_login($arr);
+			$validasi = $this->Mod_login->valid_login($arr);
 
 			/*$this->pre(array($arr, $validasi));
 			die;*/
@@ -287,10 +398,38 @@ class Login extends CI_Controller {
 					'status' => 'Login',
 					'id_stat' => 'user',
 				);
-				
-				$qq = $this->session->set_userdata('data', $data_session);
-				
-				redirect('','refresh');
+
+				$cartBarang = $this->session->userdata('cartbarang');
+
+				if(!empty($cartBarang)){
+
+					
+
+					$date = date('Y-m-d');
+
+					$data = array(
+						'id_barang' => $cartBarang['id_barang'],
+						'id_user' => $validasi->id,
+						'harga' => $cartBarang['harga'],
+						'qty' => 1,
+						'mac' => $cartBarang['mac'],
+						'tanggal' => $date,
+					);
+
+					/*$this->pre(array($session, $cartBarang, $data));
+					die;*/
+					$insert = $this->Mod_cart->ins_cart($data);
+					$qq = $this->session->set_userdata('data', $data_session);
+					
+					redirect('cart/mycart','refresh');
+					
+				}else{
+
+					$qq = $this->session->set_userdata('data', $data_session);
+					
+					redirect('','refresh');
+				}
+
 
 			}else{
 
@@ -313,7 +452,7 @@ class Login extends CI_Controller {
 				'password' => $password,
 			);
 
-			$validasi = $this->mod_login->valid_login($data);
+			$validasi = $this->Mod_login->valid_login($data);
 			
 			if($validasi != null){
 
@@ -385,7 +524,7 @@ class Login extends CI_Controller {
 			die;*/
 			
 
-			$validasi = $this->mod_login->valid_login($arr);
+			$validasi = $this->Mod_login->valid_login($arr);
 			
 			if($validasi != null){
 				
@@ -425,7 +564,7 @@ class Login extends CI_Controller {
 
 
 
-			$validasi = $this->mod_login->valid_login($data);
+			$validasi = $this->Mod_login->valid_login($data);
 			
 			if($validasi != null){
 

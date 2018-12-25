@@ -283,10 +283,22 @@ class Ordering extends CI_Controller {
 
 	public function Transaksiku()
 	{
-		$sess = $this->session->userdata('data');
-		$sess = $sess['id'];
+		$session = $this->session->userdata('data');
+		$sess = $session['id'];
+		$status = $session['id_stat'];
 
-		$_myTrans = $this->Mod_ordering->_myTrans($sess);
+		if($status == 'guest'){
+
+			$_myTrans = $this->Mod_ordering->_myTransGuest($sess);
+
+		}else{
+
+			$_myTrans = $this->Mod_ordering->_myTrans($sess);
+
+		}
+		
+
+
 		$sekarang = $this->Mod_ordering->sekarang();
 		$user = $this->Mod_login->user($sess);
 		
@@ -325,14 +337,28 @@ class Ordering extends CI_Controller {
 		$this->pagination->initialize($config);		
 		$link =  $this->pagination->create_links();
 
-		$data = array(
-			'cart' => $this->Mod_cart->jumlah_cart_by_user($sess),
-			'_myTrans' => $_myTrans,
-			'sekarang' => $sekarang,
-			'link' => $link,
-			'session' => $this->session->userdata('data'),
-			'user' => $user
-		);
+		if($status == 'guest'){
+
+			$data = array(
+				'cart' => $this->Mod_cart->jumlah_cart_by_user($sess),
+				'_myTrans' => $_myTrans,
+				'sekarang' => $sekarang,
+				'link' => $link,
+				'session' => $this->session->userdata('data'),
+			);
+
+		}else{
+
+			$data = array(
+				'cart' => $this->Mod_cart->jumlah_cart_by_user($sess),
+				'_myTrans' => $_myTrans,
+				'sekarang' => $sekarang,
+				'link' => $link,
+				'session' => $this->session->userdata('data'),
+				'user' => $user
+			);
+		}
+
 
 		/*$this->pre($data);
 		die;*/

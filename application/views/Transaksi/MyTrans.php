@@ -288,72 +288,80 @@ body {font-family: Arial;}
 									}
 									?>
 								</div>
-								<div class="col-md-12" id="myprofile">
-									<div class="panel panel-default">
-										<form action="<?php echo site_url('User/update/'.$user->id);?>" method="post" enctype="multipart/form-data">
-											<div class="panel-body">
-												<div class="col-md-9">
-													<label for="email">Email</label>
-													<input type="email" class="form-control" name="email" id="frm-email" value="<?php echo $user->email;?>" style="border: 1px solid !important;">
-													<label for="usernama_depan">Nama Depan</label>
-													<input type="text" name="usernama_depan" class="form-control" id="frm-namadepan" value="<?php echo $user->usernama_depan;?>" style="border: 1px solid !important;">
-													<label for="usernama_belakang">Nama Belakang</label>
-													<input type="text" name="usernama_belakang" class="form-control" id='frm-namabelakang' value="<?php echo $user->usernama_belakang;?>" style="border: 1px solid !important;">
-													<label for="telephon">Telephon</label>
-													<input type="text" name="telephon" class="form-control" id='frm-no' value="<?php echo $user->telephon;?>" style="border: 1px solid !important;">
-													<label for="tgl_lahir">Tanggal Lahir</label>
-													<input type="date" class="form-control" name="tgl_lahir" value="<?php echo $user->tgl_lahir;?>" id='frm-date' style="border: 1px solid !important;" max="<?php echo $date;?>">
-													<label for="jk">Jenis Kelamin</label><br>
-													<?php
-													if(empty($user->jk)){
-														
-														echo "<input id='frm-jk' type='radio' name='jk' value='Laki - laki' required> Laki - laki &nbsp;&nbsp;";
-														echo "<input type='radio' id='frm-jk' name='jk' value='Perempuan' required> Perempuan";
+								<?php
+									if(empty($user)){
 
-													}else{
+									}else{
+								?>
+										<div class="col-md-12" id="myprofile">
+											<div class="panel panel-default">
+												<form action="<?php echo site_url('User/update/'.$user->id);?>" method="post" enctype="multipart/form-data">
+													<div class="panel-body">
+														<div class="col-md-9">
+															<label for="email">Email</label>
+															<input type="email" class="form-control" name="email" id="frm-email" value="<?php echo $user->email;?>" style="border: 1px solid !important;">
+															<label for="usernama_depan">Nama Depan</label>
+															<input type="text" name="usernama_depan" class="form-control" id="frm-namadepan" value="<?php echo $user->usernama_depan;?>" style="border: 1px solid !important;">
+															<label for="usernama_belakang">Nama Belakang</label>
+															<input type="text" name="usernama_belakang" class="form-control" id='frm-namabelakang' value="<?php echo $user->usernama_belakang;?>" style="border: 1px solid !important;">
+															<label for="telephon">Telephon</label>
+															<input type="text" name="telephon" class="form-control" id='frm-no' value="<?php echo $user->telephon;?>" style="border: 1px solid !important;">
+															<label for="tgl_lahir">Tanggal Lahir</label>
+															<input type="date" class="form-control" name="tgl_lahir" value="<?php echo $user->tgl_lahir;?>" id='frm-date' style="border: 1px solid !important;" max="<?php echo $date;?>">
+															<label for="jk">Jenis Kelamin</label><br>
+															<?php
+															if(empty($user->jk)){
+																
+																echo "<input id='frm-jk' type='radio' name='jk' value='Laki - laki' required> Laki - laki &nbsp;&nbsp;";
+																echo "<input type='radio' id='frm-jk' name='jk' value='Perempuan' required> Perempuan";
 
-														if($user->jk == 'Perempuan'){
+															}else{
 
-															echo "<input type='radio' name='jk' id='frm-jk' value='Laki - laki' > Laki - laki &nbsp;&nbsp;";
-															echo "<input type='radio' name='jk' id='frm-jk' value='Perempuan' checked> Perempuan";
+																if($user->jk == 'Perempuan'){
 
-														}else{
+																	echo "<input type='radio' name='jk' id='frm-jk' value='Laki - laki' > Laki - laki &nbsp;&nbsp;";
+																	echo "<input type='radio' name='jk' id='frm-jk' value='Perempuan' checked> Perempuan";
 
-															echo "<input type='radio' name='jk' id='frm-jk' value='Laki - laki' checked> Laki - laki&nbsp;&nbsp;";
-															echo "<input type='radio' name='jk' id='frm-jk' value='Perempuan' > Perempuan";
+																}else{
 
-														}
-													}
-													?>
+																	echo "<input type='radio' name='jk' id='frm-jk' value='Laki - laki' checked> Laki - laki&nbsp;&nbsp;";
+																	echo "<input type='radio' name='jk' id='frm-jk' value='Perempuan' > Perempuan";
 
-												</div>
-												<div class="col-md-3">
-													<div class="thumbnail">
-														<?php
+																}
+															}
+															?>
 
-														if(!empty($user->images)){
+														</div>
+														<div class="col-md-3">
+															<div class="thumbnail">
+																<?php
 
-															echo "<img src='".base_url('user_up/'.$user->images)."' id='uploadPreview'>";
-															echo '<div class="caption" style="margin-top: -20px;text-align: center;">
-																	<input type="file" name="images" id="frm-img" class="form-control" onchange="PreviewImage(event)">
-																</div>';
+																if(!empty($user->images)){
 
-														}else{
+																	echo "<img src='".base_url('user_up/'.$user->images)."' id='uploadPreview'>";
+																	echo '<div class="caption" style="margin-top: -20px;text-align: center;">
+																			<input type="file" name="images" id="frm-img" class="form-control" onchange="PreviewImage(event)">
+																		</div>';
 
-															echo '<img src="'.base_url('assets/Gambar/Blank-profile.png').'" alt="" class="img img-responsive" id="uploadPreview">';
-															echo '<div class="caption" style="margin-top: -20px;text-align: center;">
-																	<input type="file" name="images" id="frm-img" class="form-control" onchange="PreviewImage(event)">
-																</div>';
-														}
-														?>
-														
+																}else{
+
+																	echo '<img src="'.base_url('assets/Gambar/Blank-profile.png').'" alt="" class="img img-responsive" id="uploadPreview">';
+																	echo '<div class="caption" style="margin-top: -20px;text-align: center;">
+																			<input type="file" name="images" id="frm-img" class="form-control" onchange="PreviewImage(event)">
+																		</div>';
+																}
+																?>
+																
+															</div>
+															<input type="submit" value="Edit Data" class="btn btn-primary" id="btn-user">
+														</div>											
 													</div>
-													<input type="submit" value="Edit Data" class="btn btn-primary" id="btn-user">
-												</div>											
+												<form>
 											</div>
-										<form>
-									</div>
-								</div>
+										</div>
+								<?php
+									}
+								?>
 
 							</div>
 						</div>
@@ -366,32 +374,39 @@ body {font-family: Arial;}
 							</div>
 						</div>
 					</div>
+					<?php
+						if(empty($user)){
 
-					<!-- background kanan -->
-					<form>
-					<div class="col-md-2 col-md-pull-10" style="margin-top: 50px;overflow-x: hidden; background-color: white;">
-						<div class="sidebar" style="display : block; padding-top: 20px;">
-							<div class="thumbnail">
-								<?php
-									if(!empty($user->images)){
+						}else{
+					?>
+						<!-- background kanan -->
+						<form>
+						<div class="col-md-2 col-md-pull-10" style="margin-top: 50px;overflow-x: hidden; background-color: white;">
+							<div class="sidebar" style="display : block; padding-top: 20px;">
+								<div class="thumbnail">
+									<?php
+										if(!empty($user->images)){
 
-										echo "<img src='".base_url('user_up/'.$user->images)."'>";
+											echo "<img src='".base_url('user_up/'.$user->images)."'>";
 
-									}else{
-										echo '<img src="'.base_url('assets/Gambar/Blank-profile.png').'" alt="" class="thumbnail">';
-									}
-								?>
-								<div class="caption" style="margin-top: -20px;text-align: center;">
-									<?php echo $user->usernama_depan;?>
+										}else{
+											echo '<img src="'.base_url('assets/Gambar/Blank-profile.png').'" alt="" class="thumbnail">';
+										}
+									?>
+									<div class="caption" style="margin-top: -20px;text-align: center;">
+										<?php echo $user->usernama_depan;?>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<p><a href="#javascript:void(0);" style="color:black;" id="btn-akun"><span class="icon-user3"></span> Akun Saya</a></p>
+									<p><a href="#javascript:void(0);" style="color:black;" id="btn-belanja"><span class="icon-cart2"></span> Belanjaku</a></p>
 								</div>
 							</div>
-							<div class="col-md-12">
-								<p><a href="#javascript:void(0);" style="color:black;" id="btn-akun"><span class="icon-user3"></span> Akun Saya</a></p>
-								<p><a href="#javascript:void(0);" style="color:black;" id="btn-belanja"><span class="icon-cart2"></span> Belanjaku</a></p>
-							</div>
 						</div>
-					</div>
-					</form>
+						</form>
+					<?php
+						}
+					?>
 				</div>
 			</div>
 		</div>

@@ -33,7 +33,7 @@
 
 					?>
 					<tr>
-						<td colspan="5" class="text-right">Total</td>
+						<td colspan="5" class="text-right">Sub Total</td>
 						<td ><?php echo "Rp ".number_format($total,2);?></td>
 					</tr>
 					<tr>
@@ -61,7 +61,7 @@
 						<td ><?php echo "Rp ".number_format($value_query->ongkir,2);?></td>
 					</tr>
 					<tr>
-						<td colspan="5" class="text-right">Kurir</td>
+						<td colspan="5" class="text-right">Total</td>
 						<td><?php echo "Rp ".number_format($totalall,2);?></td>
 					</tr>
 				</tbody>

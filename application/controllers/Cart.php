@@ -12,6 +12,21 @@ class Cart extends CI_Controller {
 		$this->load->library('user_agent');
 	}
 
+	public function cart_login()
+	{
+		$input = $this->input->post();
+		$id_barang = $input['id_barang'];
+		$get_barang = $this->Mod_barang->get_barangby($id_barang); //get model barang by id
+		
+		$this->session->set_userdata('cartbarang', $input); //set session cart barang
+
+		$data = array(
+			'barang' => $get_barang,
+		);
+
+		$this->load->view('Cart/Modal_cartlogin', $data);
+	}
+
 	public function mycart() //$user, $id_shop
 	{
 		ob_start();

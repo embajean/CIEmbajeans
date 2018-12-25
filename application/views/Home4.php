@@ -108,7 +108,7 @@
 									<div class="cart">
 										<!-- <p><span><a href="#"><i>Tampilan Cepat</i></a></span></p> -->
 										<p>
-												<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
+												<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
 												<span><a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>"><i class="icon-eye"></i></a></span> 
 												<span><a href="#javascript(0);" class="add_love" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>"><i class="icon-heart3"></i></a></span>
 												<?php
