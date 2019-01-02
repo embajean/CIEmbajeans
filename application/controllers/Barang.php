@@ -196,42 +196,51 @@ class Barang extends CI_Controller {
 
 					$config['upload_path'] = './uploads/';
 					$config['allowed_types'] = 'gif|jpg|png|jpeg';
-					$config['max_size']  = '200';
-					$config['max_width']  = '1024';
-					$config['max_height']  = '768';
+					$config['encrypt_name'] = TRUE;
 					
 					$this->load->library('upload', $config);
 					$files = $_FILES;
 				
 				for ($key= 0; $key < $_countImg; $key++) {
-					//$img = time().$_FILES['gambar']['name'][$key];
-					$name_image = time().$gambar[$key];
-					$name_image = explode(' ', $name_image);
-					$name_image = implode('_', $name_image);
-					/*$name_image = explode('-', $name_image);
-					$name_image = implode('_', $name_image);*/
 					
-					$_FILES['gambar_product']['name']= time().$gambar[$key];
-			        $_FILES['gambar_product']['type']= $files['gambar_product']['type'][$key];
-			        $_FILES['gambar_product']['tmp_name']= $files['gambar_product']['tmp_name'][$key];
-			        $_FILES['gambar_product']['error']= $files['gambar_product']['error'][$key];
-			        $_FILES['gambar_product']['size']= $files['gambar_product']['size'][$key];    
+					$_FILES['gambar_product']['name'] = time().$gambar[$key];
+			        $_FILES['gambar_product']['type'] = $files['gambar_product']['type'][$key];
+			        $_FILES['gambar_product']['tmp_name'] = $files['gambar_product']['tmp_name'][$key];
+			        $_FILES['gambar_product']['error'] = $files['gambar_product']['error'][$key];
+			        $_FILES['gambar_product']['size'] = $files['gambar_product']['size'][$key];    
 
 			        $this->upload->initialize($config);
 			        $this->upload->do_upload('gambar_product');
 
-			        $data_gambar = array(
+			        $gbr = $this->upload->data();
+
+			        	//Compress Image
+		                $config['image_library']='gd2';
+		                $config['source_image']='./uploads/'.$gbr['file_name'];
+		                $config['create_thumb']= FALSE;
+		                $config['maintain_ratio']= FALSE;
+		                $config['quality']= '50%';
+		                $config['width']= 700;
+		                $config['height']= 700;
+		                $config['new_image']= './uploads/'.$gbr['file_name'];
+		                $this->load->library('image_lib', $config);
+		                $this->image_lib->resize();
+		 
+		                $gambarfile = $gbr['file_name'];
+
+			        	$data_gambar[$key] = array(
 							'sku' => $ins['sku'],
-							'gambar_product' => $name_image,
+							'gambar_product' => $gambarfile,
 						);
+			       
 
 			        
 
-			        $this->Mod_barang->ins_gambar($data_gambar);
+			        $this->Mod_barang->ins_gambar($data_gambar[$key]);
 					
 				}
 
-				/*$this->pre($data_gambar);
+				/*$this->pre(array($data_gambar,$files));
 			        die;*/
 
 				$this->session->set_flashdata('msg', 
@@ -263,10 +272,11 @@ class Barang extends CI_Controller {
 		
 	}
 
-	public function delete_barang($id)
+	public function delete_barang($id, $sku)
 	{
+
 		#$id = $this->input->post('id');
-		$qq = $this->Mod_barang->delete($id);
+		$qq = $this->Mod_barang->delete($id, $sku);
 		#$this->pre($qq);
 		$this->session->set_flashdata('msg', 
 				        '<div class="alert alert-danger alert-dismissible">
@@ -405,9 +415,10 @@ class Barang extends CI_Controller {
 			//input gambar / size and stok
 			$config['upload_path'] = './uploads/';
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
-			$config['max_size']  = '200';
-			$config['max_width']  = '1024';
-			$config['max_height']  = '768';
+			$config['encrypt_name'] = TRUE;
+			/*$config['max_size']  = '200';
+			$config['max_width']  = '700';
+			$config['max_height']  = '700';*/
 
 			$this->load->library('upload', $config);
 			$files = $_FILES;
@@ -445,12 +456,28 @@ class Barang extends CI_Controller {
 			        $this->upload->initialize($config);
 			        $this->upload->do_upload('gambar_edit');
 
+			        $gbr = $this->upload->data();
+
+			        	//Compress Image
+		                $config['image_library']='gd2';
+		                $config['source_image']='./uploads/'.$gbr['file_name'];
+		                $config['create_thumb']= FALSE;
+		                $config['maintain_ratio']= FALSE;
+		                $config['quality']= '50%';
+		                $config['width']= 700;
+		                $config['height']= 700;
+		                $config['new_image']= './uploads/'.$gbr['file_name'];
+		                $this->load->library('image_lib', $config);
+		                $this->image_lib->resize();
+		 
+		                $gambar=$gbr['file_name'];
+
 			        $data_gambar[$key] = array(
 							'sku' => $sku,
-							'gambar_product' => $name_image,
+							'gambar_product' => $gambar,
 						);
-			         /*$this->pre(array($name_image, $_FILES['gambar_edit'], $this->upload->do_upload('gambar_edit'), $data_gambar));
-					die;*/
+			         /*$this->pre(array('edit' => $data_gambar));
+			         die;*/
 
 
 					$query_gambar = $this->Mod_barang->edit_gambar($data_barang['sku'], $id_gambar[$key], $data_gambar[$key]);
@@ -487,13 +514,28 @@ class Barang extends CI_Controller {
 				        $this->upload->initialize($config);
 				        $this->upload->do_upload('gambar_input');
 
-				        $data_gambar = array(
+				        $gbr = $this->upload->data();
+
+			        	//Compress Image
+		                $config['image_library']='gd2';
+		                $config['source_image']='./uploads/'.$gbr['file_name'];
+		                $config['create_thumb']= FALSE;
+		                $config['maintain_ratio']= FALSE;
+		                $config['quality']= '50%';
+		                $config['width']= 700;
+		                $config['height']= 700;
+		                $config['new_image']= './uploads/'.$gbr['file_name'];
+		                $this->load->library('image_lib', $config);
+		                $this->image_lib->resize();
+		 
+		                $gambar=$gbr['file_name'];
+
+				        $data_gambar[$key_gambarBaru] = array(
 								'sku' => $sku,
-								'gambar_product' => $name_image,
+								'gambar_product' => $gambar,
 							);
 
-
-						$query_gambar = $this->Mod_barang->ins_gambar($data_gambar);
+						$query_gambar = $this->Mod_barang->ins_gambar($data_gambar[$key_gambarBaru]);
 
 					}
 
@@ -547,7 +589,9 @@ class Barang extends CI_Controller {
 								<h4>Berhasil Edit data '.$sku.'</h4>
 							</div>');
 				redirect('Barang','refresh');
+
 			}else{
+
 				echo 'false';
 			}
 

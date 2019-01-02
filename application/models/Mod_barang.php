@@ -72,9 +72,13 @@ class Mod_barang extends CI_Model {
 		return $query;
 	}
 
-	public function delete($id)
+	public function delete($id, $sku)
 	{
-		$query = $this->db->delete($this->table, array('id' => $id));
+		$query = $this->db->delete($this->table, array('id' => $id)); //delete barang
+		//delete gambar
+		$this->db->delete('gambar',array('sku' => $sku));
+		$this->db->delete('stok_by_size', array('sku' => $sku));
+		//delete stok
 		return $query;
 		//return $this->db->delete($this->table, $id);
 	}

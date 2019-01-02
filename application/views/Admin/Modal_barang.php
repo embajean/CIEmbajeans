@@ -15,7 +15,7 @@
                                 <?php
                                     if(empty($gambar)){
                                 ?>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <img src="<?php echo base_url('assets/gambar/Blank-profile.png');?>" id="uploadPreviewModal1" class="form-control img-responsive" style="width: auto; height: auto;">
                                             
                                             <label>Gambar <p style="color:red">(max 200kb)</p></label>
@@ -30,7 +30,7 @@
                                             $key++;
                                         ?>
                                             <div class="col-md-2">
-                                                <img src="<?php echo base_url('uploads/'.$value->gambar_product);?>" id="uploadPreviewModal<?Php echo $key;?>" class="form-control img-responsive" style="width: auto; height: auto;">
+                                                <img src="<?php echo base_url('uploads/'.$value->gambar_product);?>" id="uploadPreviewModal<?Php echo $key;?>" class="form-control img-responsive">
 
                                                 <label>Gambar <?php echo $key;?>
                                                     <p style="color:red">(max 200kb)<br>
@@ -173,6 +173,7 @@
         $("#limdis1").attr('disabled', true);
         $("#limdis2").attr('disabled', true);
 
+
     $(document).ready(function() {
 
     var _picture = <?php echo $jumlah_gambar;?>;
@@ -184,7 +185,7 @@
             _picture++;
             if(_picture <= 6){
 
-             var _showPict = "<div class='col-md-4 col-lg-4 uploadPreviewModal-apn"+_picture+"'><img src='<?php echo base_url('assets/gambar/Blank-profile.png');?>' id='uploadPreviewModal"+_picture+"' class='form-control img-responsive' style='width: auto; height: auto;'><label>Gambar "+_picture+"<p style='color:red'>(max 200kb)</p></label><input id='uploadImageModal"+_picture+"' type='file' required='' name='gambar_input[]' onchange='PreviewImage"+_picture+"(event);'></div>";
+             var _showPict = "<div class='col-md-2 col-lg-2 uploadPreviewModal-apn"+_picture+"'><img src='<?php echo base_url('assets/Gambar/Blank-profile.png');?>' id='uploadPreviewModal"+_picture+"' class='form-control img-responsive' style='width: auto; height: auto;'><label>Gambar "+_picture+"<p style='color:red'>(max 200kb)</p></label><input id='uploadImageModal"+_picture+"' type='file' required='' name='gambar_input[]' onchange='PreviewImage"+_picture+"(event);'></div>";
 
                 $("#_addpictModal").append(_showPict);
                     console.log("Plus"+_picture);
@@ -250,6 +251,8 @@
 
              }
 
+        });
+
         //change log kategori
         $('#edit-kategori').change(function() {
             var sku = '<?php echo $barang->sku;?>';
@@ -266,9 +269,10 @@
 
         });
 
-      
-
     });
+
+             
+         
 
 
     //hide
