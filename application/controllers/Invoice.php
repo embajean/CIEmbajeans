@@ -171,6 +171,10 @@ class Invoice extends CI_Controller {
 
 					$row[] = '<p style="color:green">Complete</p>';
 
+				}elseif ($value_field->status == 'return') {
+					
+					$row[] = '<p style="color:orange">Return</p>';
+
 				}
 
 				#$row[] = '<a href="javascript:void(0);" data-target="#modalEditslider" data-toggle="modal" data-id="#" title="Ubah"><i class="ti-ruler-pencil"></i></a>&nbsp;&nbsp;<a href="" title="hapus" onclick="return konfirmasi()""><span class="ti-trash"></span><span class="icon-name"></span></a>';

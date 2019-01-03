@@ -69,7 +69,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-10 col-md-push-2" id="shop-1">
-						<div class="row row-pb-lg">
+						<div class="row row-pb-lg" style="padding-bottom: 0!important;">
 							<div class="row">
 								<div class="col-lg-9">
 									<div id="notifications"><?php echo $this->session->flashdata('msg'); ?></div>
@@ -78,17 +78,15 @@
 									<form>
 										<select class="form-control" id="sel-shop">
 											<option>Sortir Menurut</option>
-											<option> Harga Turun </option>
-											<option> Harga Naik</option>
-											<option> Terbaru</option>
-											<option> Diskon</option>
+											<option value="desc"> Harga Turun </option>
+											<option value="asc"> Harga Naik</option>
 										</select>
 									</form>
 									<br>
 								</div>
 							</div>
 							
-							<div class="row">
+							<div class="row" id="barang-list">
 							<?php
 							if(!empty($barang)){
 								$date = date('Y-m-d');
@@ -103,64 +101,83 @@
 									$diskon = ($date <= $value_barang->lim_diskon) ? $value_barang->harga - (($value_barang->diskonpersen / 100) * $value_barang->harga ) : $value_barang->harga;
 									/*var_dump($diskon);
 									die;*/
-
+/*
+									var_dump(count($gambar[11]));
+									die;*/
 								?>
 								<div class="col-md-3 col-xs-6 text-center">
 									<div class="product-entry">
 										<a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>">
-											<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][0]->gambar_product);?>);">
-												<p class="tag"><span class="new">
-													
-													<?php
-													//selisih tanggal
-														$exp_tgl = explode(' ', $value_barang->tgl_buat);
-														$tanggal_awal = new DateTime($exp_tgl[0]);
-														$tanggal_selisih = new DateTime();
-														$selisih = $tanggal_selisih->diff($tanggal_awal)->format("%a");
+											<?php
+												if(!empty($gambar[$key_barang])){
+											?>
 
-														if($selisih <= 30){
-															echo "New";
-														}
+												<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][0]->gambar_product);?>);">
+													<p class="tag"><span class="new">
 														
-													?>
+														<?php
+														//selisih tanggal
+															$exp_tgl = explode(' ', $value_barang->tgl_buat);
+															$tanggal_awal = new DateTime($exp_tgl[0]);
+															$tanggal_selisih = new DateTime();
+															$selisih = $tanggal_selisih->diff($tanggal_awal)->format("%a");
 
-												</span></p>
-												<div class="overlay">
-													<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][1]->gambar_product);?>)">
+															if($selisih <= 30){
+																echo "New";
+															}
+															
+														?>
+
+													</span></p>
+													<?php
+														if(!empty($gambar[$key_barang][1])){
+													?>
+														<div class="overlay">
+															<div class="product-img" style="background-image: url(<?php echo base_url('uploads/'.$gambar[$key_barang][1]->gambar_product);?>)">
+															</div>
+														</div>
+													<?php
+														}else{
+
+														}
+													?>
+													
+													<div class="cart">
+														<p>
+															<?php
+																if(!empty($session)){
+															?>
+																<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
+
+															<?php
+																}else{
+															?>
+															<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
+															<?php
+																}
+															?>
+															
+
+
+															<span><a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>"><i class="icon-eye"></i></a></span> 
+															<span><a href="#javascript(0);" class="add_love" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>"><i class="icon-heart3"></i></a></span>
+															<?php
+																if(!empty($session['id'])){
+																	?>
+																	<span><a href="#javascript(0);" class="add_wish" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>"><i class="icon-bar-chart"></i></a></span>
+																	<?php
+																}
+															?>
+														</p>
 													</div>
 												</div>
-												<div class="cart">
-													<p>
-														<?php
-															if(!empty($session)){
-														?>
-															<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
 
-														<?php
-															}else{
-														?>
-														<span class="addtocart"><a href="#javascript(0);" class="add_cart" data-target='#modallogin' data-toggle='modal' data-produkid="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>" data-produkharga="<?php echo $value_barang->harga;?>" data-user="<?php echo $session['id'];?>" data-qty="1"><i class="icon-shopping-cart"></i></a></span> 
-														<?php
-															}
-														?>
-														
-
-
-														<span><a href="<?php echo site_url('Shop/single/'.$value_barang->id);?>"><i class="icon-eye"></i></a></span> 
-														<span><a href="#javascript(0);" class="add_love" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>" data-mac="<?php echo $mac;?>"><i class="icon-heart3"></i></a></span>
-														<?php
-															if(!empty($session['id'])){
-																?>
-																<span><a href="#javascript(0);" class="add_wish" data-user="<?php echo $session['id'];?>" data-barang="<?php echo $value_barang->id;?>"><i class="icon-bar-chart"></i></a></span>
-																<?php
-															}
-														?>
-													</p>
-												</div>
-											</div>
+											<?php
+												}
+											?>
 										</a>
 										<div class="desc">
-											<h3><?php echo $value_barang->barangnama;?></h3>
+											<!-- <h3><?php echo $value_barang->barangnama;?></h3> -->
 											<?php
 
 												if($date <= $value_barang->lim_diskon){
@@ -192,16 +209,11 @@
 							}else{
 								echo "Tidak ada Barang";
 							}
+							echo $pagination
 								?>
-							
-							</div>
-							
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<?php echo $this->pagination->create_links();?>
 							</div>
 						</div>
+						
 					</div>
 
 					<!-- background kanan -->
@@ -214,14 +226,14 @@
 			                   	<p style="color:white; font-family: Arial; font-size : 15px;">Koleksi<span class="text-right" style="    padding-left: 95px;text-align: right"><a href="#javascript(0);" style="color: rgb(231, 228, 233);" id="tampil_koleksi"><i class="icon-plus-square"></i></a></span></p>
 			                   	<div id="koleksi">
 				                   	<div class='col-md-10'>
-				                   		<input type='checkbox' name='cb[]' style='height:11px; border-radius:25px; -moz-border-radius:25px;'>
+				                   		<input type='radio' name='kategori' id="list-kategori" value="semua" style='height:11px; border-radius:25px; -moz-border-radius:25px;'>
 				                   		 <label style="color: rgb(231, 228, 233); font-size : 11px; font-family : Arial; text-decoration : underline;">Semua</label>
 				                   	</div>
 				                   	<?php
 				                   		foreach ($kategori as $key_kategori => $value_kategori) {
 				                   	?>
 				                   		<div class='col-md-10'>
-				                   			<input type='checkbox' name='cb[]' style="height : 11px;">
+				                   			<input type='radio' name='kategori' id="list-kategori<?php echo $key_kategori;?>" value="<?php echo $value_kategori->kategorinama;?>" style='height:11px; border-radius:25px; -moz-border-radius:25px;'>
 				                   			<label style='color:rgb(231, 228, 233); font-family : Arial; font-size : 11px; '><?php echo $value_kategori->kategorinama;?></label>
 				                   		</div>
 				            		 <?php
@@ -244,16 +256,11 @@
 								<p style="color:white; font-family: Arial; font-size : 15px;">Warna<span id="showcolor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="text-right" style="padding-left: 60px;text-align: right"><a href="#javascript(0);" style="color: rgb(231, 228, 233);" id="tampil_color"><i class="icon-plus-square"></i></a></span></p>
 								<div class="color-wrap" id="color">
 									<p class="color-desc">
-										<a href="#" class="color color-1" id="txt_color" data-color="khaki" style="border-radius : 25px; background-color : khaki;"></a>
-										<a href="#" class="color color-2" id="txt_color" data-color="white" style="border-radius : 25px; background-color : white"></a>
-										<a href="#" class="color color-3" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-4" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-5" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-1" style="border-radius : 25px; background-color : khaki;"></a>
-										<a href="#" class="color color-2" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-3" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-4" style="border-radius : 25px;"></a>
-										<a href="#" class="color color-5" style="border-radius : 25px;"></a>
+										<?php
+											foreach ($warna as $key_warna => $value_warna) {
+												echo '<a href="javascript:void(0);" class="color color-1" id="list-warna'.$key_warna.'" data-warna="'.$value_warna->warna.'" style="border-radius : 25px; background-color : '.$value_warna->kode.';"></a>';
+											}
+										?>
 									</p>
 								</div>
 							</div>
@@ -262,14 +269,15 @@
 								<p style="color:white; font-family: Arial; font-size : 15px;">Ukuran<span class="text-right" style="    padding-left: 94px;text-align: right"><a href="#javascript(0);" style="color: rgb(231, 228, 233);" id="tampil_size"><i class="icon-plus-square"></i></a></span></p>
 								<div class="size-wrap" id="size">
 									<p class="size-desc">
-										<a href="#" class="size size-1">xs</a>
-										<a href="#" class="size size-2">s</a>
-										<a href="#" class="size size-3">m</a>
-										<a href="#" class="size size-4">l</a>
-										<a href="#" class="size size-5">xl</a>
-										<a href="#" class="size size-5">xxl</a>
+										<a href="javascript:void(0);" id="list-size1" data-size='m' class="size size-3">M</a>
+										<a href="javascript:void(0);" id="list-size2" data-size='l' class="size size-4">L</a>
+										<a href="javascript:void(0);" id="list-size3" data-size='xl' class="size size-5">XL</a>
 									</p>
 								</div>
+							</div>
+							<div class="row">
+								<hr style="width : 160px; margin-top: -5px;">
+								<a href="javascript:void(0);" id="default"><p style="color:white; font-family: Arial; font-size : 15px;" class="center">Reset</p></a>
 							</div>
 						</div>
 					</div>

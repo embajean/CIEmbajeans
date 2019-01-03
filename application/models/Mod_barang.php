@@ -129,6 +129,51 @@ class Mod_barang extends CI_Model {
 		return $query;
 	}
 
+	public function banyak_data_by_kategori($kategori)
+	{
+		$this->db->select("barang.*");
+		$this->db->from('barang');
+		$this->db->join('kategori', 'barang.id_kategori = kategori.id');
+		$this->db->where('kategori.kategorinama = "'.$kategori.'"');
+		$query = $this->db->get()->num_rows();
+
+		return $query;
+	}
+
+	public function banyak_data_by_warna($warna)
+	{
+		$this->db->from("barang_by_kategori");
+		$this->db->like("warna", "$warna");
+		$query = $this->db->get()->num_rows();
+
+		return $query;
+	}
+
+	public function banyak_data_by_size($size)
+	{
+
+		if($size == 'm'){
+
+			$awal = '26';
+			$akhir = '30';
+
+		}elseif($size == 'l'){
+
+			$awal = '31';
+			$akhir = '34';
+
+		}elseif ($size == 'xl') {
+			
+			$awal = '35';
+			$akhir = '38';
+
+		}
+
+		$query = $this->db->query('select * from barang_by_size where ukuran ="'.$size.'" or ukuran between "'.$awal.'" and "'.$akhir.'"')->num_rows();
+
+		return $query;
+	}
+
 	public function get_shop($limit, $start)
 	{
 		$this->db->select('barang.*, kategori.kategorinama');
@@ -137,6 +182,56 @@ class Mod_barang extends CI_Model {
 		$this->db->limit($limit, $start);
 		$this->db->order_by('barang.tgl_buat', 'desc');
 		$query = $this->db->get()->result();
+		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
+		return $query;
+	}
+
+	public function get_shop_by_kategori($limit, $start, $kategori)
+	{
+		/*$query = $this->db->query('select * from barang_by_kategori where kategorinama = "?" order by tgl_buat desc limit ? ?',array($kategori, $start, $limit))->result();*/
+		$this->db->from('barang_by_kategori');
+		$this->db->where("kategorinama = '$kategori'");
+		$this->db->limit($limit, $start);
+		$this->db->order_by('tgl_buat', 'desc');
+		$query = $this->db->get()->result();
+		
+		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
+		return $query;
+	}
+
+	public function get_shop_by_warna($limit, $start, $warna)
+	{
+		$this->db->from('barang_by_kategori');
+		$this->db->like("warna","$warna");
+		$this->db->limit($limit, $start);
+		$this->db->order_by('tgl_buat', 'desc');
+		$query = $this->db->get()->result();
+		
+		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
+		return $query;
+	}
+
+	public function get_shop_by_size($limit, $start, $size)
+	{
+		if($size == 'm'){
+
+			$awal = '26';
+			$akhir = '30';
+
+		}elseif($size == 'l'){
+
+			$awal = '31';
+			$akhir = '34';
+
+		}elseif ($size == 'xl') {
+			
+			$awal = '35';
+			$akhir = '38';
+
+		}
+
+		$query = $this->db->query('select * from barang_by_size where ukuran = "'.$size.'" or ukuran between "'.$awal.'" and "'.$akhir.'" ORDER BY tgl_buat DESC limit '.$start.','.$limit.'')->result();
+		
 		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
 		return $query;
 	}

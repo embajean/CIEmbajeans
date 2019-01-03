@@ -164,6 +164,71 @@
 
 	  $(document).ready(function() {
 
+	  	//listbarang
+	  	//koleksi shop
+	  	$("#default").click(function() {
+	  		$("#barang-list").load('<?php echo site_url("Shop/Shop_default");?>');
+	  	});
+	  	<?php
+	  		for($i = 1; $i <= 3; $i++){
+	  	?>
+	  		$("#list-size<?php echo $i;?>").click(function() {
+	  			var size = $(this).data('size');
+	  			$.ajax({
+	  				url: '<?php echo site_url('Shop/Shop_size');?>',
+	  				type: 'POST',
+	  				data: {size: size},
+	  				success:function(data){
+	  					$("#barang-list").html(data);
+	  				}
+	  			})	  			
+	  		});
+	  	<?php
+	  		}
+
+	  		if(!empty($kategori)){
+	  			foreach ($kategori as $key_kategori => $value_kategori) {
+	  			?>
+	  				$("#list-kategori<?php echo $key_kategori;?>").click(function() {
+	  					var kategori = $("#list-kategori<?php echo $key_kategori;?>").val();
+	  					$.ajax({
+				  			url: '<?php echo site_url('Shop/get_shop_by_kategori');?>',
+				  			type: 'POST',
+				  			data: {kategori: kategori},
+				  			success:function(data){
+				  				$("#barang-list").html(data);
+				  			}
+				  		})
+	  				});
+
+	  			<?php
+	  			}
+	  		}
+	  	?>
+
+	  	//warna shop
+	  	<?php
+	  	if(!empty($warna)){
+	  		foreach ($warna as $key_warna => $value_warna) {
+	  		?>
+	  		$("#list-warna<?php echo $key_warna;?>").click(function() {
+	  			var warna = $(this).data('warna');
+	  			$.ajax({
+	  				url: '<?php echo site_url('Shop/get_shop_by_warna');?>',
+	  				type: 'POST',
+	  				data: {warna: warna},
+	  				success:function(data){
+	  					$("#barang-list").html(data);
+	  				}
+	  			})
+	  			
+	  		});
+	  	<?php
+	  		}
+	  	}
+	  	?>
+	  	//end list barang
+
 	  	<?php
 	  		if(!empty($session)){ //if session true
 	  	?>
