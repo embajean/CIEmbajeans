@@ -91,6 +91,10 @@
                                         }
                                         echo "</div>";
                                     ?>
+
+                                    <label>Warna</label>
+                                   <textarea class="form-control"><?php echo $barang->warna;?></textarea>
+                                    
                                    
                                 </div>
                                 <div class="col-md-6">
@@ -188,8 +192,8 @@
              var _showPict = "<div class='col-md-2 col-lg-2 uploadPreviewModal-apn"+_picture+"'><img src='<?php echo base_url('assets/Gambar/Blank-profile.png');?>' id='uploadPreviewModal"+_picture+"' class='form-control img-responsive' style='width: auto; height: auto;'><label>Gambar "+_picture+"<p style='color:red'>(max 200kb)</p></label><input id='uploadImageModal"+_picture+"' type='file' required='' name='gambar_input[]' onchange='PreviewImage"+_picture+"(event);'></div>";
 
                 $("#_addpictModal").append(_showPict);
-                    console.log("Plus"+_picture);
-                    console.log(_showPict);
+                    /*console.log("Plus"+_picture);
+                    console.log(_showPict);*/
 
             }else{
 

@@ -16,6 +16,7 @@ class Barang extends CI_Controller {
 			$session = $this->session->userdata('data');
 			$this->load->model('Mod_kategori');
 			$this->load->model('Mod_barang');
+			$this->load->model('Mod_warna');
 
 		}else{
 			redirect('Login/Admembajeans','refresh');
@@ -91,6 +92,7 @@ class Barang extends CI_Controller {
 			'gambar' => $_listGambar,
 			'size' => $_listSize,
 			'link' => $this->pagination->create_links(),
+			'warna' => $this->Mod_warna->get_all_data(),
 		);
 
 		/*$this->pre($data);
@@ -126,12 +128,15 @@ class Barang extends CI_Controller {
 		$awal = $this->input->post('lim_diskon');
 		$akhir = $this->input->post('lim_diskon2');
 
+		$warna = $this->input->post('warna');
+		$imp = implode(',', $warna);
+
 		$ins = array(
 			'sku' => $this->input->post('sku'),
 			'barangnama' => $this->input->post('barangnama'),
 			'id_kategori' => $this->input->post('id_kategori'),
 			'harga' => $this->input->post('harga'),
-			'warna' => $this->input->post('warna'),
+			'warna' => $imp,
 			'deskripsi' => $this->input->post('deskripsi'),
 			'petunjukcuci' => $this->input->post('Petunjukcuci'),
 			'detailsize' => $this->input->post('detailsize'),

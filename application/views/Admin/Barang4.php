@@ -163,7 +163,17 @@ $date = date('Y-m-d');
                                     <label>Harga</label>
                                     <input type="number" name="harga" class="form-control" value="0" required="">
                                     <label>Warna</label>
-                                    <input type="text" name="warna" class="form-control" required>
+                                    
+                                    <select multiple="multiple" id="warna-select" name="warna[]" class="form-control" required="">
+                                        <?php
+                                               foreach ($warna as $key_warna => $value_warna) {
+                                                   echo "<option value='$value_warna->warna'>  $value_warna->warna </option>";
+                                               }
+                                        ?>
+                                    </select>
+                                    <p id="warna-pilih"></p>
+                                    <h6>Tahan CTRL untuk memilih warna lagi</h6>
+
                                 </div>
                                 <div class="col-md-6">
                                     <label>Detail Size</label>
@@ -401,7 +411,8 @@ $date = date('Y-m-d');
 </html>
 
 <script type="text/javascript">
-
+    //color
+    
     function konfirmasi(){
 
         tanya = confirm('Yakin hapus data ini ?');
@@ -448,6 +459,24 @@ $date = date('Y-m-d');
 
          $('#listKategori').load('<?php echo site_url("Kategori/");?>');
          $("#frm-input").hide();
+
+         //pilih warna
+         $("#warna-select").change(function() {
+             var warna = $("#warna-select").val();
+
+             if(warna == null){
+
+                $("#warna-pilih").text(null);
+
+             }else{
+
+                $("#warna-pilih").text(warna + ",");
+
+             }
+
+             
+
+         });
 
          $("#diskonpersen").keyup(function() {
              var text = $('#diskonpersen').val();
