@@ -13,6 +13,61 @@ class Invoice extends CI_Controller {
 
 			$this->load->model("Mod_transaksi");
 
+
+			//PERUBAHAN STATUS
+			$transaksi = $this->Mod_transaksi->get_all_data();
+
+			foreach ($transaksi['query'] as $key_transaksi => $value_transaki) {
+				
+				if($value_transaki->status == 'nonpaid'){
+
+					if($value_transaki->batasbayar < $transaksi['now']){
+
+						$data = array(
+							'status' => "expired",
+						);
+
+						$update = $this->Mod_transaksi->update_sukses($value_transaki->id, $data);
+
+					}
+
+				}elseif($value_transaki->status == 'Diperiksa' || $value_transaki->status == 'Diproses'){
+
+					$tgl_resi = $value_transaki->tgl_no_resi;
+					$intDay = $this->Mod_transaksi->intervalproces($tgl_resi);
+
+					if($transaksi['now'] > $intDay){
+
+						$data = array(
+							'status' => 'return'
+						);
+
+						$update = $this->Mod_transaksi->update_sukses($value_transaki->id, $data);
+
+					}
+
+				}elseif ($value_transaki->status == 'Dikirim') {
+					
+					$estimasi = $value_transaki->estimasi;
+					$tgl_resi = $value_transaki->tgl_no_resi;
+
+					$tgl_sampai = $this->Mod_transaksi->intervalkirim($tgl_resi, $estimasi);
+
+					if($transaksi['now'] > $tgl_sampai){
+
+						$data = array('status'=> 'Complete');
+
+						$update = $this->Mod_transaksi->update_sukses($value_transaki->id, $data);
+
+					}
+
+
+				}
+			}
+
+			/*$this->pre($transaksi);
+			die;*/
+
 		}else{
 			redirect('Login/Admembajeans','refresh');
 			
@@ -108,9 +163,13 @@ class Invoice extends CI_Controller {
 					
 					$row[] = 'Belum bayar'.$lihat_detail;
 
-				}else{
+				}elseif($value_field->status == 'expired'){
 
-					$row[] = '<p style="color:red">Kadaluarsa</p>'.$lihat_detail;
+					$row[] = '<p style="color:red">Kadaluarsa</p>';
+
+				}elseif ($value_field->status == 'Complete') {
+
+					$row[] = '<p style="color:green">Complete</p>';
 
 				}
 

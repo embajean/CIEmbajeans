@@ -389,8 +389,10 @@ class Login extends CI_Controller {
 			die;*/
 			
 			if($validasi != null){
-				
-				$data_session = array(
+
+				if($validasi->status != 'adm'){
+
+					$data_session = array(
 					'id' => $validasi->id,
 					'namadepan' => $validasi->usernama_depan,
 					'email' => $validasi->email,
@@ -399,37 +401,49 @@ class Login extends CI_Controller {
 					'id_stat' => 'user',
 				);
 
-				$cartBarang = $this->session->userdata('cartbarang');
+					$cartBarang = $this->session->userdata('cartbarang');
 
-				if(!empty($cartBarang)){
+					if(!empty($cartBarang)){
 
-					
+						
 
-					$date = date('Y-m-d');
+						$date = date('Y-m-d');
 
-					$data = array(
-						'id_barang' => $cartBarang['id_barang'],
-						'id_user' => $validasi->id,
-						'harga' => $cartBarang['harga'],
-						'qty' => 1,
-						'mac' => $cartBarang['mac'],
-						'tanggal' => $date,
-					);
+						$data = array(
+							'id_barang' => $cartBarang['id_barang'],
+							'id_user' => $validasi->id,
+							'harga' => $cartBarang['harga'],
+							'qty' => 1,
+							'mac' => $cartBarang['mac'],
+							'tanggal' => $date,
+						);
 
-					/*$this->pre(array($session, $cartBarang, $data));
-					die;*/
-					$insert = $this->Mod_cart->ins_cart($data);
-					$qq = $this->session->set_userdata('data', $data_session);
-					
-					redirect('cart/mycart','refresh');
-					
+						/*$this->pre(array($session, $cartBarang, $data));
+						die;*/
+						$insert = $this->Mod_cart->ins_cart($data);
+						$qq = $this->session->set_userdata('data', $data_session);
+						
+						redirect('cart/mycart','refresh');
+						
+					}else{
+
+						$qq = $this->session->set_userdata('data', $data_session);
+						
+						redirect('','refresh');
+					}
+
 				}else{
 
-					$qq = $this->session->set_userdata('data', $data_session);
-					
-					redirect('','refresh');
-				}
+					$this->session->set_flashdata('msg', 
+							'<div class="alert alert-danger alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h4>Oppss !</h4>
+								Email / Password Salah !!
+							</div>');
+					redirect('login','refresh');
 
+				}
+				
 
 			}else{
 

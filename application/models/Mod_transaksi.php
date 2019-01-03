@@ -17,6 +17,33 @@ class Mod_transaksi extends CI_Model {
         return $query;
     }
 
+    public function get_all_data()
+    {
+        $query = $this->db->get($this->table)->result();
+        $now = $this->db->query('select now() as now')->row();
+        $now = $now->now;
+        return array('now' => $now, 'query' => $query);
+    }
+
+    public function intervalproces($tgl_resi)
+    {
+        $query = $this->db->query('SELECT date_add("'.$tgl_resi.'", INTERVAL 3 day) as day')->row();
+        $query = $query->day;
+        return $query;
+    }
+
+    public function intervalkirim($tgl_resi, $estimasi)
+    {
+        $est = explode(' ', $estimasi);
+        $est = explode('-', $est[0]);
+        $est = $est[1];
+        /*var_dump($est);
+        die;*/
+        $query = $this->db->query("select date_add('$tgl_resi', INTERVAL $est day) as day")->row();
+        $query = $query->day;
+        return $query;
+    }
+
 	//server side datatables
 	private function _get_datatables_query()
 	{
