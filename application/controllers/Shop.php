@@ -428,6 +428,152 @@ class Shop extends CI_Controller {
 		$this->load->view('Shop/List_warna', $data);
 	}
 
+	public function Shop_asc()
+	{
+
+		ob_start();
+		system('ipconfig/all');
+		$mycom = ob_get_contents();
+		ob_clean();
+		$findme = "Physical";
+		$pmac = strpos($mycom, $findme);
+		$mac = substr($mycom, ($pmac+36), 17);
+
+		/*$this->pre($kategori);
+		die;*/
+		$banyak_data = $this->Mod_barang->banyak_data();
+
+		$this->load->library('pagination');
+		
+		$config['base_url'] = site_url('shop/index');
+		$config['total_rows'] = $banyak_data;
+		$config['per_page'] = 20;
+		$config['uri_segment'] = 3;
+		$config['num_links'] = 3;
+		$config['full_tag_open'] = '<p>';
+		$config['first_link']       = 'First';
+        $config['last_link']        = 'Last';
+        $config['next_link']        = 'Next';
+        $config['prev_link']        = 'Prev';
+        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
+        $config['full_tag_close']   = '</ul></nav></div>';
+        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close']    = '</span></li>';
+        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
+        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['prev_tagl_close']  = '</span>Next</li>';
+        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+        $config['first_tagl_close'] = '</span></li>';
+        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['last_tagl_close']  = '</span></li>';
+
+        $from = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $start = $config['per_page'];
+		
+		$this->pagination->initialize($config);
+
+		$_listBarang = $this->Mod_barang->get_shop_asc($start, $from);
+
+		$tanggal = date('Y-m-d');
+
+		foreach ($_listBarang as $key_barang => $value_barang) {
+			
+			$_listGambar[] = $this->Mod_barang->get_gambar_by_sku2($value_barang->sku);
+
+		}
+
+		$_listGambar = !empty($_listGambar) ? $_listGambar : null;
+
+		$data = array(
+			'barang' => $_listBarang,
+			'gambar' => $_listGambar,
+			'mac' => $mac,
+			'session' => $this->session->userdata('data'),
+			'pagination' =>  $this->pagination->create_links(),
+		);
+
+		/*$this->pre(array($banyak_data,$data));
+		die;*/
+
+		$this->load->view('Shop/List_warna', $data);
+	}
+
+	public function Shop_desc()
+	{
+
+		ob_start();
+		system('ipconfig/all');
+		$mycom = ob_get_contents();
+		ob_clean();
+		$findme = "Physical";
+		$pmac = strpos($mycom, $findme);
+		$mac = substr($mycom, ($pmac+36), 17);
+
+		/*$this->pre($kategori);
+		die;*/
+		$banyak_data = $this->Mod_barang->banyak_data();
+
+		$this->load->library('pagination');
+		
+		$config['base_url'] = site_url('shop/index');
+		$config['total_rows'] = $banyak_data;
+		$config['per_page'] = 20;
+		$config['uri_segment'] = 3;
+		$config['num_links'] = 3;
+		$config['full_tag_open'] = '<p>';
+		$config['first_link']       = 'First';
+        $config['last_link']        = 'Last';
+        $config['next_link']        = 'Next';
+        $config['prev_link']        = 'Prev';
+        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
+        $config['full_tag_close']   = '</ul></nav></div>';
+        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close']    = '</span></li>';
+        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
+        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['prev_tagl_close']  = '</span>Next</li>';
+        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+        $config['first_tagl_close'] = '</span></li>';
+        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+        $config['last_tagl_close']  = '</span></li>';
+
+        $from = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $start = $config['per_page'];
+		
+		$this->pagination->initialize($config);
+
+		$_listBarang = $this->Mod_barang->get_shop_desc($start, $from);
+
+		$tanggal = date('Y-m-d');
+
+		foreach ($_listBarang as $key_barang => $value_barang) {
+			
+			$_listGambar[] = $this->Mod_barang->get_gambar_by_sku2($value_barang->sku);
+
+		}
+
+		$_listGambar = !empty($_listGambar) ? $_listGambar : null;
+
+		$data = array(
+			'barang' => $_listBarang,
+			'gambar' => $_listGambar,
+			'mac' => $mac,
+			'session' => $this->session->userdata('data'),
+			'pagination' =>  $this->pagination->create_links(),
+		);
+
+		/*$this->pre(array($banyak_data,$data));
+		die;*/
+
+		$this->load->view('Shop/List_warna', $data);
+	}
+
 	function single($id){
 		//get mac address
 		ob_start();

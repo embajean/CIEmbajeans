@@ -77,7 +77,7 @@
 								<div class="col-lg-3">
 									<form>
 										<select class="form-control" id="sel-shop">
-											<option>Sortir Menurut</option>
+											<option value="">Sortir Menurut</option>
 											<option value="desc"> Harga Turun </option>
 											<option value="asc"> Harga Naik</option>
 										</select>

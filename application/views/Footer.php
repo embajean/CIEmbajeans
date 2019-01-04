@@ -169,6 +169,38 @@
 	  	$("#default").click(function() {
 	  		$("#barang-list").load('<?php echo site_url("Shop/Shop_default");?>');
 	  	});
+
+	  	//sortir harga
+	  	$('#sel-shop').change(function(event) {
+	  		var des = $("#sel-shop").val();
+
+	  		if(des == 'desc'){
+
+	  			$.ajax({
+		  			url: '<?php echo site_url();?>',
+		  			type: 'POST',
+		  			data: {des : des},
+		  			success:function(data){
+		  				$("#barang-list").load('<?php echo site_url("Shop/Shop_desc");?>');
+		  			}
+		  		})	
+
+	  		}else{
+
+	  			$.ajax({
+		  			url: '<?php echo site_url();?>',
+		  			type: 'POST',
+		  			data: {des : des},
+		  			success:function(data){
+		  				$("#barang-list").load('<?php echo site_url("Shop/Shop_asc");?>');
+		  			}
+		  		})
+
+	  		}
+	  		
+	  		
+	  	});
+
 	  	<?php
 	  		for($i = 1; $i <= 3; $i++){
 	  	?>

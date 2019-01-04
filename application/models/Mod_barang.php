@@ -186,6 +186,30 @@ class Mod_barang extends CI_Model {
 		return $query;
 	}
 
+	public function get_shop_asc($limit, $start)
+	{
+		$this->db->select('barang.*, kategori.kategorinama');
+		$this->db->from('barang');
+		$this->db->join('kategori','barang.id_kategori = kategori.id');
+		$this->db->limit($limit, $start);
+		$this->db->order_by('barang.harga', 'asc');
+		$query = $this->db->get()->result();
+		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
+		return $query;
+	}
+
+	public function get_shop_desc($limit, $start)
+	{
+		$this->db->select('barang.*, kategori.kategorinama');
+		$this->db->from('barang');
+		$this->db->join('kategori','barang.id_kategori = kategori.id');
+		$this->db->limit($limit, $start);
+		$this->db->order_by('barang.harga', 'desc');
+		$query = $this->db->get()->result();
+		/*$query = $this->db->get('provinsi', $limit, $start)->result();*/
+		return $query;
+	}
+
 	public function get_shop_by_kategori($limit, $start, $kategori)
 	{
 		/*$query = $this->db->query('select * from barang_by_kategori where kategorinama = "?" order by tgl_buat desc limit ? ?',array($kategori, $start, $limit))->result();*/
